@@ -4,18 +4,15 @@ const SETS: Array<[RegExp, string]> = [
   [/[0-9]/, '0123456789'],
 ];
 
-/** Swap a character for a random one of the same kind, so scrambled text keeps roughly the same width. */
+/** Swap a character for a random one of the same kind; anything else (spaces, punctuation, CJK) stays put. */
 function scramble(ch: string): string {
   for (const [re, set] of SETS) if (re.test(ch)) return set[Math.floor(Math.random() * set.length)];
   return ch;
 }
 
-interface Job { node: Text; text: string; start: number; duration: number }
+interface Word { el: HTMLSpanElement; text: string; start: number; duration: number }
 
-/** Every piece of text visible on first load scrambles and resolves, top to bottom. */
-export function initDecode(): void {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const vh = window.innerHeight;
+const visibleTextNodes = (vh: number): Text[] => {
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
       const el = (node as Text).parentElement;
@@ -25,59 +22,63 @@ export function initDecode(): void {
       return r.width > 0 && r.bottom > 0 && r.top < vh ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
     },
   });
+  const out: Text[] = [];
+  for (let n = walker.nextNode(); n; n = walker.nextNode()) out.push(n as Text);
+  return out;
+};
 
-  const jobs: Job[] = [];
-  for (let n = walker.nextNode(); n; n = walker.nextNode()) {
-    const node = n as Text;
-    const top = Math.max(0, node.parentElement!.getBoundingClientRect().top);
-    jobs.push({ node, text: node.data, start: (top / vh) * 350, duration: Math.min(900, 300 + node.data.length * 6) });
-  }
-  if (!jobs.length) return;
+/**
+ * Every piece of text visible on first load scrambles and resolves, top to bottom.
+ * Each word is held at its real width while scrambled, so no line ever re-wraps and nothing shifts.
+ */
+export async function initDecode(): Promise<void> {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // Measure in the final font, but don't hold the effect back for long.
+  await Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, 600))]);
 
-  // Scrambled text wraps differently from the real text, which would push content around. Hold each text
-  // block at its real size until decoding ends (measure everything first, then write, to avoid layout thrash).
-  const boxes = new Set<HTMLElement>();
-  for (const job of jobs) {
-    let el: HTMLElement | null = job.node.parentElement;
-    while (el && getComputedStyle(el).display === 'inline') el = el.parentElement;
-    if (el) boxes.add(el);
-  }
-  const sizes = [...boxes].map((el) => {
-    const r = el.getBoundingClientRect();
-    // A box no taller than about one line of its text is a label or button: keep it on one line while scrambled.
-    const oneLine = r.height < parseFloat(getComputedStyle(el).fontSize) * 2.4;
-    return [el, r, oneLine] as const;
-  });
-  for (const [el, r, oneLine] of sizes) {
-    el.style.height = `${r.height}px`;
-    el.style.width = `${r.width}px`;
-    if (oneLine) el.style.whiteSpace = 'nowrap';
-  }
-  const release = () => {
-    for (const [el] of sizes) {
-      el.style.removeProperty('height');
-      el.style.removeProperty('width');
-      el.style.removeProperty('white-space');
+  const vh = window.innerHeight;
+  const nodes = visibleTextNodes(vh);
+  if (!nodes.length) return;
+
+  // Write pass: split each text node into word spans (whitespace and break points after hyphens stay as they were).
+  const restore: Array<[HTMLSpanElement, Text]> = [];
+  const words: Word[] = [];
+  for (const node of nodes) {
+    const host = document.createElement('span');
+    for (const part of node.data.split(/(\s+|(?<=-))/)) {
+      if (!part) continue;
+      if (/^\s+$/.test(part)) { host.append(part); continue; }
+      const el = document.createElement('span');
+      el.textContent = part;
+      host.append(el);
+      words.push({ el, text: part, start: 0, duration: 0 });
     }
-  };
+    node.replaceWith(host);
+    restore.push([host, node]);
+  }
+  // Read pass: real widths and positions. Then fix each word to its width.
+  const rects = words.map((w) => w.el.getBoundingClientRect());
+  words.forEach((w, i) => {
+    w.el.style.display = 'inline-block';
+    w.el.style.width = `${rects[i].width}px`;
+    w.el.style.whiteSpace = 'pre';
+    w.start = (Math.max(0, rects[i].top) / vh) * 350;
+    w.duration = 300 + Math.random() * 350;
+  });
 
   const t0 = performance.now();
   const frame = (now: number) => {
     let running = false;
-    for (const job of jobs) {
-      const p = Math.min(1, Math.max(0, (now - t0 - job.start) / job.duration));
-      if (p >= 1) {
-        if (job.node.data !== job.text) job.node.data = job.text;
-        continue;
-      }
-      running = true;
-      const reveal = Math.floor(p * job.text.length);
-      let out = job.text.slice(0, reveal);
-      for (let i = reveal; i < job.text.length; i++) out += scramble(job.text[i]);
-      job.node.data = out;
+    for (const w of words) {
+      const p = Math.min(1, Math.max(0, (now - t0 - w.start) / w.duration));
+      if (p < 1) running = true;
+      const reveal = Math.floor(p * w.text.length);
+      let out = w.text.slice(0, reveal);
+      for (let i = reveal; i < w.text.length; i++) out += scramble(w.text[i]);
+      if (w.el.textContent !== out) w.el.textContent = out;
     }
     if (running) requestAnimationFrame(frame);
-    else release();
+    else for (const [host, node] of restore) host.replaceWith(node);
   };
   requestAnimationFrame(frame);
 }
