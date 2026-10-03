@@ -23,14 +23,6 @@ const { items } = Astro.props;
   .lineage__item:hover, .lineage__item.is-active { color: var(--fg); }
   .lineage__item:hover .lineage__line, .lineage__item.is-active .lineage__line { width: 64px; }
   @media (prefers-reduced-motion: reduce) { .lineage__line { transition: none; } }
-  @media (max-width: 1024px) {
-    .lineage {
-      position: sticky; top: 0; z-index: 20; flex-direction: row; gap: 24px; overflow-x: auto;
-      margin-inline: -16px; padding: 0 16px; background: var(--bg); border-bottom: 1px solid var(--line);
-      scrollbar-width: none;
-    }
-    .lineage__line { display: none; }
-    .lineage__item { flex-shrink: 0; border-bottom: 2px solid transparent; }
-    .lineage__item.is-active { border-bottom-color: var(--accent); }
-  }
+  /* On one-column screens the page is short enough to scroll; section headings stick instead (see index.astro). */
+  @media (max-width: 1024px) { .lineage { display: none; } }
 </style>

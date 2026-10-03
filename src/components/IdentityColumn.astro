@@ -65,8 +65,6 @@ const { profile, nav } = Astro.props;
     .identity { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
   }
   @media (max-width: 1024px) {
-    /* The column dissolves into the one-column shell so the lineage nav can stick to the page top. */
-    .identity { display: contents; }
-    .identity__intro { padding-top: 56px; }
+    .identity { gap: 24px; padding: 56px 0 0; }
   }
 </style>

@@ -79,5 +79,10 @@ const jsonLd = {
   @media (max-width: 1024px) {
     .shell { grid-template-columns: minmax(0, 1fr); column-gap: 0; padding-inline: 16px; }
     .content { padding: 48px 0 64px; gap: 72px; }
+    /* No section nav here, so each section heading stays pinned while you read that section. */
+    .content :global(h2.label) {
+      position: sticky; top: 0; z-index: 10; margin-inline: -16px; padding: 14px 16px;
+      background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px);
+    }
   }
 </style>
