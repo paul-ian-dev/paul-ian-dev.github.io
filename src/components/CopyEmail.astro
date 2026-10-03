@@ -5,6 +5,7 @@ const { email } = Astro.props;
 <div class="copy-email">
   <span id="email-address" class="mono">{email}</span>
   <button type="button" class="copy-email__btn" data-copy={email} aria-controls="email-address" aria-label="Copy email address" hidden>Copy</button>
+  <span class="visually-hidden" role="status" data-copy-status></span>
 </div>
 
 <style>

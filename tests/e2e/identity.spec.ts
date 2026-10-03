@@ -53,3 +53,11 @@ test('each greeting word stays on one line', async ({ page }) => {
   const lines = await page.locator('.identity__greeting [lang]').evaluateAll((els) => els.map((el) => el.getClientRects().length));
   expect(lines).toEqual([1, 1, 1, 1, 1]);
 });
+
+test('copying the email is announced to screen readers', async ({ page, context }) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  await page.goto('/');
+  // The button's aria-label fixes its accessible name, so the visible "Copied" text is never announced.
+  await page.getByRole('button', { name: 'Copy email address' }).click();
+  await expect(page.locator('.copy-email [role="status"]')).toHaveText(/copied/i);
+});
