@@ -2,6 +2,10 @@ import { z } from 'astro/zod';
 
 const yearMonth = z.string().regex(/^(\d{4}-\d{2}|\[[^\]]+\])$/, 'Use YYYY-MM, or a [placeholder]');
 
+/** Sveltia CMS saves a cleared optional field as "", so treat blank as missing. */
+const optional = <T extends z.ZodType>(schema: T) =>
+  z.preprocess((v) => (typeof v === 'string' && v.trim() === '' ? undefined : v), schema.optional());
+
 export const profileSchema = z.object({
   name: z.string(),
   headline: z.string(),
@@ -12,7 +16,7 @@ export const profileSchema = z.object({
   email: z.email(),
   linkedin: z.url(),
   github: z.url(),
-  cv: z.string().optional(),
+  cv: optional(z.string()),
   whatIBuild: z.array(z.object({ label: z.string(), caption: z.string(), hub: z.boolean().default(false) })).min(2),
   stack: z.object({
     work: z.array(z.string()),
@@ -26,8 +30,8 @@ export const experienceSchema = z.object({
   title: z.string(),
   category: z.enum(['engineering', 'other']),
   start: yearMonth,
-  end: yearMonth.nullable().optional(),
-  summary: z.string().optional(),
+  end: optional(yearMonth.nullable()),
+  summary: optional(z.string()),
   tags: z.array(z.string()).default([]),
   order: z.number(),
 });
@@ -36,13 +40,13 @@ export const projectSchema = z.object({
   title: z.string(),
   summary: z.string(),
   year: z.number().int(),
-  context: z.string().optional(),
+  context: optional(z.string()),
   stack: z.array(z.string()).default([]),
   flow: z.array(z.string()).default([]),
-  cover: z.string().optional(),
-  coverAlt: z.string().optional(),
-  liveUrl: z.url().optional(),
-  repoUrl: z.url().optional(),
+  cover: optional(z.string()),
+  coverAlt: optional(z.string()),
+  liveUrl: optional(z.url()),
+  repoUrl: optional(z.url()),
   featured: z.boolean().default(false),
   earlier: z.boolean().default(false),
   order: z.number(),
@@ -52,7 +56,7 @@ export const credentialSchema = z.object({
   name: z.string(),
   issuer: z.string(),
   year: z.number().int(),
-  detail: z.string().optional(),
+  detail: optional(z.string()),
   kind: z.enum(['degree', 'certification', 'award']),
   order: z.number(),
 });
@@ -62,7 +66,7 @@ export const noteSchema = z.object({
   date: z.coerce.date(),
   summary: z.string(),
   tags: z.array(z.string()).default([]),
-  linkedinUrl: z.url().optional(),
+  linkedinUrl: optional(z.url()),
   draft: z.boolean().default(false),
 });
 
