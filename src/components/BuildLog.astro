@@ -1,11 +1,11 @@
 ---
 const built = new Date().toISOString().slice(0, 10);
 ---
-<footer class="buildlog mono">
+<footer class="buildlog">
   <span class="buildlog__dot" aria-hidden="true">●</span> last updated {built} · built with Astro · content in Git · hosted on GitHub Pages
 </footer>
 
 <style>
-  .buildlog { padding-top: 24px; border-top: 1px solid var(--line); font-size: 12px; color: var(--faint); }
+  .buildlog { padding-top: 24px; border-top: 1px solid var(--line); font-size: 13px; color: var(--faint); }
   .buildlog__dot { color: var(--accent); }
 </style>

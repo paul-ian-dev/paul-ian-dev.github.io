@@ -7,7 +7,7 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft))
 ---
 <Base title="Notes · Paul Ian Lim" description="Short write-ups of what Paul Ian Lim is learning and building.">
   <main id="main" class="page">
-    <a class="mono back" href="/">← Paul Ian Lim</a>
+    <a class="back" href="/">← Paul Ian Lim</a>
     <h1>Notes</h1>
     {notes.length === 0 ? <p class="empty">No notes yet.</p> : <NotesList notes={notes} withHeading={false} />}
   </main>

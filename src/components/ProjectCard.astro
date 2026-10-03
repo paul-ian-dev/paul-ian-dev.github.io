@@ -14,7 +14,7 @@ const external = !hasCaseStudy(project) && Boolean(href);
       {href ? <a href={href} rel={external ? 'noopener' : undefined}>{title}<span class="card__arrow" aria-hidden="true"></span></a> : title}
     </h3>
     <p class="card__summary">{summary}</p>
-    <p class="card__flow mono">{flow.join(' ──▶ ')}{flow.length > 0 ? ' · ' : ''}{year}</p>
+    <p class="card__flow">{flow.join(' → ')}{flow.length > 0 ? ' · ' : ''}{year}</p>
   </div>
 </article>
 
@@ -37,7 +37,7 @@ const external = !hasCaseStudy(project) && Boolean(href);
   }
   .card__title { width: fit-content; }
   .card__summary { font-size: 15px; color: var(--muted); }
-  .card__flow { font-size: 12px; color: var(--accent); }
+  .card__flow { font-size: 13px; font-weight: 500; color: var(--accent); }
   @media (max-width: 1024px) {
     /* The shell only has a 16px gutter here, so the hover background may bleed 12px at most. */
     .card { margin-inline: -12px; padding-inline: 12px; }
