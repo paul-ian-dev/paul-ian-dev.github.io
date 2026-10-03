@@ -41,4 +41,14 @@ describe('CMS config', () => {
     const field = c.fields!.find((f) => f.name === 'category') as Field & { options: Array<{ value: string }> };
     expect(field.options.map((o) => o.value)).toEqual(['engineering', 'other']);
   });
+
+  it('experience end date is checked in the editor and may be left empty', () => {
+    const c = config.collections.find((x) => x.name === 'experience')!;
+    const field = c.fields!.find((f) => f.name === 'end') as Field & { pattern?: [string, string] };
+    expect(field.pattern, 'end has no pattern').toBeDefined();
+    const re = new RegExp(field.pattern![0]);
+    expect(re.test('2025-06')).toBe(true);
+    expect(re.test('')).toBe(true);
+    expect(re.test('2025-6')).toBe(false);
+  });
 });
