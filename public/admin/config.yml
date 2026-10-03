@@ -31,7 +31,7 @@ collections:
             fields:
               - { name: text, label: Text, widget: string }
               - { name: lang, label: "Language code (en, zh, ms, ja, ko)", widget: string }
-          - { name: about, label: About paragraphs, widget: list, field: { name: paragraph, label: Paragraph, widget: text } }
+          - { name: about, label: "About paragraphs (links: [text](https://...))", widget: list, field: { name: paragraph, label: Paragraph, widget: text } }
           - { name: email, label: Email, widget: string }
           - { name: linkedin, label: LinkedIn URL, widget: string }
           - { name: github, label: GitHub URL, widget: string }
@@ -63,6 +63,7 @@ collections:
     sortable_fields: [order, start]
     fields:
       - { name: company, label: Company, widget: string }
+      - { name: companyUrl, label: "Company website (makes the name a link)", widget: string, required: false }
       - { name: title, label: Job title, widget: string }
       - name: category
         label: Category

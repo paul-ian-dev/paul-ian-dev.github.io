@@ -1,6 +1,7 @@
 ---
 import type { Profile } from '../content/schemas';
 import FlowStrip from './FlowStrip.astro';
+import { parseLinks } from '../lib/links';
 interface Props { profile: Profile }
 const { profile } = Astro.props;
 ---
@@ -10,7 +11,11 @@ const { profile } = Astro.props;
     <p class="label">What I build</p>
     <FlowStrip steps={profile.whatIBuild} />
   </div>
-  {profile.about.map((para) => <p class="about__para">{para}</p>)}
+  {profile.about.map((para) => (
+    <p class="about__para">
+      {parseLinks(para).map((s) => (typeof s === 'string' ? s : <a href={s.href} rel="noopener">{s.text}</a>))}
+    </p>
+  ))}
 </section>
 
 <style>

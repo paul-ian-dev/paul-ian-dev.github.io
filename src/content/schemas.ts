@@ -27,6 +27,7 @@ export const profileSchema = z.object({
 
 export const experienceSchema = z.object({
   company: z.string(),
+  companyUrl: optional(z.url()),
   title: z.string(),
   category: z.enum(['engineering', 'other']),
   start: yearMonth,

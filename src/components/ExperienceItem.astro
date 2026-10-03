@@ -3,12 +3,12 @@ import type { CollectionEntry } from 'astro:content';
 import { formatRange } from '../lib/format';
 interface Props { entry: CollectionEntry<'experience'>; compact?: boolean }
 const { entry, compact = false } = Astro.props;
-const { company, title, start, end, summary, tags } = entry.data;
+const { company, companyUrl, title, start, end, summary, tags } = entry.data;
 ---
 <li class:list={['xp', { 'xp--compact': compact }]}>
   <span class="xp__node" aria-hidden="true"></span>
   <p class="xp__dates">{formatRange(start, end)}</p>
-  <h4 class="xp__title">{title}<span class="xp__company"><span class="visually-hidden">, </span>{company}</span></h4>
+  <h4 class="xp__title">{title}<span class="xp__company"><span class="visually-hidden">, </span>{companyUrl ? <a href={companyUrl} rel="noopener">{company}</a> : company}</span></h4>
   {!compact && summary && <p class="xp__summary">{summary}</p>}
   {!compact && tags.length > 0 && (
     <ul class="xp__tags">{tags.map((t) => <li class="tag">{t}</li>)}</ul>
