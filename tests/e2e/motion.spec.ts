@@ -32,3 +32,12 @@ test('scroll-spy moves the current node, including to the last section', async (
   await expect(page.locator('.lineage__item[href="#credentials"]')).toHaveAttribute('aria-current', 'true');
   await expect(page.locator('.lineage__item[href="#about"]')).not.toHaveAttribute('aria-current', 'true');
 });
+
+test('on mobile the scrolling nav keeps the current section in view', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  const current = page.locator('.lineage__item[href="#credentials"]');
+  await expect(current).toHaveAttribute('aria-current', 'true');
+  await expect(current).toBeInViewport({ ratio: 1 });
+});

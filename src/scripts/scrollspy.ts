@@ -1,12 +1,26 @@
 export function initScrollSpy(): void {
   const links = [...document.querySelectorAll<HTMLAnchorElement>('.lineage__item')];
   if (!links.length) return;
+  // On narrow screens the nav is a horizontal scroller; keep the current item inside it.
+  const reveal = (a: HTMLAnchorElement) => {
+    const nav = a.parentElement;
+    if (!nav || nav.scrollWidth <= nav.clientWidth) return;
+    const pad = 16;
+    const left = a.offsetLeft - pad;
+    const right = a.offsetLeft + a.offsetWidth + pad - nav.clientWidth;
+    if (nav.scrollLeft > left || nav.scrollLeft < right) {
+      const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      nav.scrollTo({ left: nav.scrollLeft > left ? left : right, behavior: smooth ? 'smooth' : 'auto' });
+    }
+  };
   const setActive = (id: string) => {
     for (const a of links) {
       const on = a.hash === `#${id}`;
       a.classList.toggle('is-active', on);
-      if (on) a.setAttribute('aria-current', 'true');
-      else a.removeAttribute('aria-current');
+      if (on) {
+        a.setAttribute('aria-current', 'true');
+        reveal(a);
+      } else a.removeAttribute('aria-current');
     }
   };
   const sections = links
