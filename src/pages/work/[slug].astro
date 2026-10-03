@@ -18,7 +18,7 @@ const showCover = Boolean(project.data.cover) && !project.body?.includes(project
 ---
 <Base title={`${title} · Paul Ian Lim`} description={summary}>
   <main id="main" class="case">
-    <a class="case__back" href="/#work">← Back to all work</a>
+    <a class="case__back" href="/#work">← Back to all projects</a>
     <p class="label">{[context, year].filter(Boolean).join(', ')}</p>
     <h1 class="case__title" style={`view-transition-name: title-${project.id}`}>{title}</h1>
     <p class="case__summary">{summary}</p>

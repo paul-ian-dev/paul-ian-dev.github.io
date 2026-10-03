@@ -1,5 +1,5 @@
 ---
-title: Four client websites in 2.5 months
+title: Zoewebs client websites
 summary: E-commerce and corporate sites for Zoewebs clients, from build through to client training.
 year: 2022
 context: Zoewebs

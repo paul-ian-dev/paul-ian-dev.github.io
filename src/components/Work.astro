@@ -7,7 +7,7 @@ const { featured, earlier } = Astro.props;
 ---
 {(featured.length > 0 || earlier.length > 0) && (
   <section id="work" class="work" aria-labelledby="work-heading">
-    <h2 id="work-heading" class="label">Selected work</h2>
+    <h2 id="work-heading" class="label">Projects</h2>
     {featured.map((p) => <ProjectCard project={p} />)}
     {earlier.length > 0 && (
       <div class="work__earlier">
