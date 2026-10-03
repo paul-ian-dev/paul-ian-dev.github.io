@@ -1,0 +1,33 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { notes: CollectionEntry<'notes'>[]; limit?: number; withHeading?: boolean }
+const { notes, limit, withHeading = true } = Astro.props;
+const shown = limit ? notes.slice(0, limit) : notes;
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+---
+{shown.length > 0 && (
+  <section id="notes" class="notes" aria-labelledby={withHeading ? 'notes-heading' : undefined}>
+    {withHeading && <h2 id="notes-heading" class="label">Notes</h2>}
+    <ol class="notes__list">
+      {shown.map((n) => (
+        <li class="note">
+          <time class="note__date mono" datetime={iso(n.data.date)}>{iso(n.data.date)}</time>
+          <a class="note__title" href={`/notes/${n.id}/`}>{n.data.title}</a>
+          <p class="note__summary">{n.data.summary}</p>
+        </li>
+      ))}
+    </ol>
+    {limit && notes.length > limit && <a class="notes__all mono" href="/notes/">All notes →</a>}
+  </section>
+)}
+
+<style>
+  .notes { display: flex; flex-direction: column; gap: 20px; }
+  .notes__list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+  .note { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 4px 24px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .note__date { font-size: 12px; color: var(--faint); padding-top: 3px; }
+  .note__title { font-size: 17px; font-weight: 600; text-decoration: none; }
+  .note__summary { grid-column: 2; font-size: 14px; color: var(--muted); }
+  .notes__all { font-size: 13px; color: var(--accent); }
+  @media (max-width: 640px) { .note { grid-template-columns: minmax(0, 1fr); } .note__summary { grid-column: 1; } }
+</style>

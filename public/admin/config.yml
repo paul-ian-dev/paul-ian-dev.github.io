@@ -1,0 +1,143 @@
+backend:
+  name: github
+  repo: paul-ian-dev/paul-ian-dev.github.io
+  branch: master
+  commit_messages:
+    create: "Content: create {{collection}} “{{slug}}”"
+    update: "Content: update {{collection}} “{{slug}}”"
+    delete: "Content: delete {{collection}} “{{slug}}”"
+    uploadMedia: "Content: upload “{{path}}”"
+    deleteMedia: "Content: delete “{{path}}”"
+
+media_folder: public/uploads
+public_folder: /uploads
+site_url: https://paul-ian-dev.github.io
+
+collections:
+  - name: profile
+    label: Profile
+    files:
+      - name: profile
+        label: Profile
+        file: src/content/profile/profile.yaml
+        fields:
+          - { name: name, label: Name, widget: string }
+          - { name: headline, label: Headline, widget: string }
+          - { name: pitch, label: One-line pitch, widget: text }
+          - { name: location, label: Location, widget: string }
+          - name: greeting
+            label: Greeting
+            widget: list
+            fields:
+              - { name: text, label: Text, widget: string }
+              - { name: lang, label: "Language code (en, zh, ms, ja, ko)", widget: string }
+          - { name: about, label: About paragraphs, widget: list, field: { name: paragraph, label: Paragraph, widget: text } }
+          - { name: email, label: Email, widget: string }
+          - { name: linkedin, label: LinkedIn URL, widget: string }
+          - { name: github, label: GitHub URL, widget: string }
+          - { name: cv, label: CV (PDF), widget: file, required: false, media_folder: /public, public_folder: / }
+          - name: whatIBuild
+            label: What I build (flow steps)
+            widget: list
+            fields:
+              - { name: label, label: Step, widget: string }
+              - { name: caption, label: Caption, widget: string }
+              - { name: hub, label: Highlight this step, widget: boolean, default: false }
+          - name: stack
+            label: Stack
+            widget: object
+            fields:
+              - { name: work, label: At work, widget: list }
+              - { name: projects, label: In projects, widget: list }
+              - { name: learning, label: Learning, widget: list }
+
+  - name: experience
+    label: Experience
+    folder: src/content/experience
+    extension: yaml
+    format: yaml
+    create: true
+    slug: "{{company}}"
+    identifier_field: company
+    summary: "{{title}} · {{company}} ({{start}})"
+    sortable_fields: [order, start]
+    fields:
+      - { name: company, label: Company, widget: string }
+      - { name: title, label: Job title, widget: string }
+      - name: category
+        label: Category
+        widget: select
+        options:
+          - { label: Engineering, value: engineering }
+          - { label: Other work, value: other }
+      - { name: start, label: "Start (YYYY-MM)", widget: string, pattern: ['^\d{4}-\d{2}$', 'Use YYYY-MM, e.g. 2025-02'] }
+      - { name: end, label: "End (YYYY-MM, leave empty if current)", widget: string, required: false }
+      - { name: summary, label: Summary, widget: text, required: false }
+      - { name: tags, label: Tags, widget: list, required: false }
+      - { name: order, label: "Order (1 = top)", widget: number, value_type: int }
+
+  - name: projects
+    label: Projects
+    folder: src/content/projects
+    extension: md
+    format: frontmatter
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} ({{year}})"
+    sortable_fields: [order, year]
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: summary, label: One-line summary, widget: text }
+      - { name: year, label: Year, widget: number, value_type: int }
+      - { name: context, label: "Context (e.g. PRECISE, Personal project)", widget: string, required: false }
+      - { name: stack, label: Stack, widget: list, required: false }
+      - { name: flow, label: "Flow line steps (e.g. Upload, Sanity, React feed)", widget: list, required: false }
+      - { name: cover, label: Screenshot, widget: image, required: false }
+      - { name: coverAlt, label: Screenshot description, widget: string, required: false }
+      - { name: liveUrl, label: Live site URL, widget: string, required: false }
+      - { name: repoUrl, label: Code repository URL, widget: string, required: false }
+      - { name: featured, label: Show in Selected work, widget: boolean, default: false }
+      - { name: earlier, label: Show in the Earlier line, widget: boolean, default: false }
+      - { name: order, label: "Order (1 = first)", widget: number, value_type: int }
+      - { name: body, label: "Case study (leave empty for no case-study page)", widget: markdown, required: false }
+
+  - name: credentials
+    label: Credentials
+    folder: src/content/credentials
+    extension: yaml
+    format: yaml
+    create: true
+    slug: "{{name}}"
+    summary: "{{name}} ({{year}})"
+    sortable_fields: [order, year]
+    fields:
+      - { name: name, label: Name, widget: string }
+      - { name: issuer, label: Issuer, widget: string }
+      - { name: year, label: Year, widget: number, value_type: int }
+      - { name: detail, label: Detail, widget: string, required: false }
+      - name: kind
+        label: Type
+        widget: select
+        options:
+          - { label: Degree, value: degree }
+          - { label: Certification, value: certification }
+          - { label: Award, value: award }
+      - { name: order, label: "Order (1 = first)", widget: number, value_type: int }
+
+  - name: notes
+    label: Notes
+    folder: src/content/notes
+    extension: md
+    format: frontmatter
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} ({{date}})"
+    sortable_fields: [date]
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Date, widget: datetime, time_format: false, date_format: YYYY-MM-DD, format: YYYY-MM-DD }
+      - { name: summary, label: One-line summary, widget: text }
+      - { name: tags, label: Tags, widget: list, required: false }
+      - { name: linkedinUrl, label: LinkedIn post URL, widget: string, required: false }
+      - { name: draft, label: Draft (hidden from the site), widget: boolean, default: true }
+      - { name: body, label: Body, widget: markdown }

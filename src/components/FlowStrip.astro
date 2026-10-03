@@ -1,0 +1,33 @@
+---
+import type { Profile } from '../content/schemas';
+interface Props { steps: Profile['whatIBuild'] }
+const { steps } = Astro.props;
+const hubIndex = Math.max(0, steps.findIndex((s) => s.hub));
+---
+<div class="flow" data-flow="strip" data-change-index={hubIndex}>
+  <ol class="flow__list">
+    {steps.map((step, i) => (
+      <li class="flow__step">
+        {i > 0 && <span class="flow__arrow" aria-hidden="true">──▶</span>}
+        <span class="flow__node">
+          <span class:list={['flow__label', { 'flow__label--hub': step.hub }]}>{step.label}</span>
+          <span class="flow__caption">{step.caption}</span>
+        </span>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<style>
+  .flow { position: relative; padding-block: 8px; }
+  .flow__list { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 12px 10px; margin: 0; padding: 0; list-style: none; }
+  .flow__step { display: flex; align-items: flex-start; gap: 10px; }
+  .flow__arrow { font-family: 'Chivo Mono', ui-monospace, monospace; font-size: 13px; color: var(--faint); padding-top: 9px; }
+  .flow__node { display: flex; flex-direction: column; gap: 8px; }
+  .flow__label {
+    padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg);
+    font-size: 14px; font-weight: 600; color: var(--fg);
+  }
+  .flow__label--hub { border-color: var(--accent); color: var(--accent); }
+  .flow__caption { font-family: 'Chivo Mono', ui-monospace, monospace; font-size: 11px; color: var(--faint); padding-left: 2px; }
+</style>

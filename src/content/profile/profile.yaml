@@ -1,0 +1,27 @@
+name: Paul Ian Lim
+headline: Software & Data Engineer
+pitch: I build data pipelines, backend integrations and the tools people use on top of them.
+location: Gold Coast, QLD, Australia
+greeting:
+  - { text: Hello, lang: en }
+  - { text: 你好, lang: zh }
+  - { text: Apa khabar, lang: ms }
+  - { text: こんにちは, lang: ja }
+  - { text: 안녕하세요, lang: ko }
+about:
+  - I'm a software and data engineer at Marketing Decisions on the Gold Coast. Most days I'm in Snowflake and Python, building the pipelines, models and internal apps that turn customer data into something a marketing team can act on.
+  - Before that I built websites for clients in Malaysia and Australia. I graduated from Griffith University in 2025 with a Bachelor of Computer Science with Distinction.
+  - I work in English and Mandarin, and also speak Malay and Japanese.
+email: paul.iand3138@hotmail.com
+linkedin: https://www.linkedin.com/in/paul-ian-au/
+github: https://github.com/paul-ian-dev
+cv: ""
+whatIBuild:
+  - { label: Sources, caption: extract }
+  - { label: Snowflake, caption: load & transform, hub: true }
+  - { label: Models, caption: predict }
+  - { label: Apps & APIs, caption: serve }
+stack:
+  work: [SQL, Snowflake, Snowpark, Python, pandas, scikit-learn, Streamlit, PHP, Azure, KQL, Braze, Eloqua]
+  projects: [React, Tailwind CSS, Node.js, Java, MySQL, AWS, Git]
+  learning: [dbt, Databricks, Power BI]

@@ -1,0 +1,85 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import IdentityColumn from '../components/IdentityColumn.astro';
+import About from '../components/About.astro';
+import ExperienceTabs from '../components/ExperienceTabs.astro';
+import Work from '../components/Work.astro';
+import StackTiers from '../components/StackTiers.astro';
+import Credentials from '../components/Credentials.astro';
+import NotesList from '../components/NotesList.astro';
+import BuildLog from '../components/BuildLog.astro';
+import { buildNav } from '../lib/nav';
+import { byOrder } from '../lib/format';
+
+const profileEntry = await getEntry('profile', 'profile');
+if (!profileEntry) throw new Error('src/content/profile/profile.yaml is missing');
+const profile = profileEntry.data;
+
+const experience = (await getCollection('experience')).sort(byOrder);
+const projects = (await getCollection('projects')).sort(byOrder);
+const credentials = (await getCollection('credentials')).sort(byOrder);
+const notes = (await getCollection('notes', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const engineering = experience.filter((e) => e.data.category === 'engineering');
+const other = experience.filter((e) => e.data.category === 'other');
+const featured = projects.filter((p) => p.data.featured);
+const earlier = projects.filter((p) => p.data.earlier);
+
+const nav = buildNav({
+  experience: engineering.length,
+  work: featured.length,
+  notes: notes.length,
+  credentials: credentials.length,
+});
+
+const title = `${profile.name} · ${profile.headline}`;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  jobTitle: profile.headline,
+  email: `mailto:${profile.email}`,
+  address: { '@type': 'PostalAddress', addressLocality: 'Gold Coast', addressRegion: 'QLD', addressCountry: 'AU' },
+  sameAs: [profile.linkedin, profile.github],
+};
+---
+<Base title={title} description={profile.pitch} jsonLd={jsonLd}>
+  <div class="shell">
+    <IdentityColumn profile={profile} nav={nav} />
+    <main id="main" class="content">
+      <About profile={profile} />
+      <ExperienceTabs engineering={engineering} other={other} />
+      <Work featured={featured} earlier={earlier} />
+      <StackTiers stack={profile.stack} />
+      <NotesList notes={notes} limit={3} />
+      <Credentials credentials={credentials} />
+      <BuildLog />
+    </main>
+  </div>
+</Base>
+
+<script>
+  import { initCopy } from '../scripts/copy';
+  import { initTabs } from '../scripts/tabs';
+  import { initParticles } from '../scripts/particles';
+  import { initScrollSpy } from '../scripts/scrollspy';
+  import { initGlow } from '../scripts/glow';
+  import { initDecode } from '../scripts/decode';
+  initCopy();
+  initTabs();
+  initScrollSpy();
+  initDecode();
+  initGlow();
+  initParticles();
+</script>
+
+<style>
+  .shell { display: grid; grid-template-columns: 470px minmax(0, 1fr); min-height: 100vh; }
+  .content { display: flex; flex-direction: column; gap: 88px; padding: 96px 104px 80px 72px; min-width: 0; }
+  @media (max-width: 1024px) {
+    .shell { grid-template-columns: minmax(0, 1fr); padding-inline: 16px; }
+    .content { padding: 48px 0 64px; gap: 72px; }
+  }
+</style>

@@ -1,0 +1,46 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { hasCaseStudy } from '../../components/work-utils';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.filter(hasCaseStudy).map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+interface Props { project: CollectionEntry<'projects'> }
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { title, summary, year, context, stack, flow, liveUrl, repoUrl } = project.data;
+---
+<Base title={`${title} · Paul Ian Lim`} description={summary}>
+  <main id="main" class="case">
+    <a class="case__back mono" href="/#work">← Back to all work</a>
+    <p class="label">{[context, year].filter(Boolean).join(' · ')}</p>
+    <h1 class="case__title" style={`view-transition-name: title-${project.id}`}>{title}</h1>
+    <p class="case__summary">{summary}</p>
+    {flow.length > 0 && <p class="case__flow mono">{flow.join(' ──▶ ')}</p>}
+    <ul class="case__tags">{stack.map((s) => <li class="tag">{s}</li>)}</ul>
+    <div class="case__links">
+      {liveUrl && <a class="btn btn--primary" href={liveUrl} rel="noopener">Visit live site ↗</a>}
+      {repoUrl && <a class="btn" href={repoUrl} rel="noopener">View code ↗</a>}
+    </div>
+    {project.data.cover && <img class="case__cover" src={project.data.cover} alt={project.data.coverAlt ?? ''} width="1200" height="750" style={`view-transition-name: cover-${project.id}`} />}
+    <div class="case__body"><Content /></div>
+  </main>
+</Base>
+
+<style>
+  .case { max-width: 72ch; margin: 0 auto; padding: 72px 16px 96px; display: flex; flex-direction: column; gap: 18px; }
+  .case__back { font-size: 13px; color: var(--faint); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .case__title { font-size: clamp(34px, 5vw, 48px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+  .case__summary { font-size: 18px; color: var(--muted); }
+  .case__flow { font-size: 13px; color: var(--accent); }
+  .case__tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .case__links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .case__cover { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); }
+  .case__body { margin-top: 16px; font-size: 16px; color: var(--muted); display: flex; flex-direction: column; gap: 14px; }
+  .case__body :global(ul) { display: flex; flex-direction: column; gap: 6px; padding-left: 20px; margin: 0; }
+  .case__body :global(a) { color: var(--fg); }
+</style>

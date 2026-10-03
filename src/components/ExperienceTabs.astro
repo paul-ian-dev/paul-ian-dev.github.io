@@ -1,0 +1,66 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ExperienceItem from './ExperienceItem.astro';
+interface Props {
+  engineering: CollectionEntry<'experience'>[];
+  other: CollectionEntry<'experience'>[];
+}
+const { engineering, other } = Astro.props;
+const hasOther = other.length > 0;
+---
+<section id="experience" class="experience" aria-labelledby="experience-heading">
+  <h2 id="experience-heading" class="label">Experience</h2>
+  <div class="tabs" data-tabs={hasOther ? '' : undefined}>
+    {hasOther && (
+      <div class="tabs__list" data-tablist aria-label="Experience type" hidden>
+        <button type="button" id="tab-engineering" data-tab="panel-engineering">Engineering</button>
+        <button type="button" id="tab-other" data-tab="panel-other">Other work</button>
+      </div>
+    )}
+    <div id="panel-engineering" class="tabs__panel" data-panel>
+      {hasOther && <h3 class="tabs__heading">Engineering</h3>}
+      <div class="timeline-wrap">
+        <span class="timeline__fill" aria-hidden="true"></span>
+        <ol class="timeline">{engineering.map((e) => <ExperienceItem entry={e} />)}</ol>
+      </div>
+    </div>
+    {hasOther && (
+      <div id="panel-other" class="tabs__panel" data-panel>
+        <h3 class="tabs__heading">Other work</h3>
+        <ol class="other-list">{other.map((e) => <ExperienceItem entry={e} compact />)}</ol>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .experience { display: flex; flex-direction: column; gap: 28px; }
+  .tabs { display: flex; flex-direction: column; gap: 28px; }
+  .tabs__list { display: flex; gap: 8px; }
+  .tabs__list button {
+    min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line);
+    background: transparent; color: var(--muted); font: 500 14px 'Chivo', system-ui, sans-serif; cursor: pointer;
+  }
+  .tabs__list button[aria-selected='true'] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .tabs__heading { font-size: 15px; font-weight: 600; color: var(--fg); margin-bottom: 16px; }
+  :global(.tabs.is-enhanced) .tabs__heading { display: none; }
+  .timeline-wrap { position: relative; view-timeline-name: --xp; }
+  .timeline-wrap::before, .timeline__fill {
+    position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; border-radius: 2px;
+  }
+  .timeline-wrap::before { content: ''; background: var(--line); }
+  .timeline__fill { background: var(--accent); transform-origin: top; transform: scaleY(1); }
+  .timeline { position: relative; display: flex; flex-direction: column; gap: 40px; margin: 0; padding: 0 0 0 36px; }
+  @keyframes timeline-fill { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .timeline__fill { animation: timeline-fill linear both; }
+      /* Separate rule: the minifier would otherwise fold animation-timeline into the shorthand, which Chrome rejects. */
+      .timeline-wrap .timeline__fill { animation-timeline: --xp; animation-range: entry 60% cover 55%; }
+    }
+  }
+  .other-list { display: flex; flex-direction: column; gap: 14px; margin: 0; padding: 0; }
+  .tabs__panel { display: flex; flex-direction: column; }
+  .tabs:not(.is-enhanced) .tabs__panel + .tabs__panel { margin-top: 40px; }
+  .tabs__panel[hidden], .tabs__list[hidden] { display: none; }
+</style>

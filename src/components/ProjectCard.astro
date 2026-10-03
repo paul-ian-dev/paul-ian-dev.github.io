@@ -1,0 +1,49 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { hasCaseStudy } from './work-utils';
+interface Props { project: CollectionEntry<'projects'> }
+const { project } = Astro.props;
+const { title, summary, year, flow, cover, coverAlt, liveUrl, repoUrl } = project.data;
+const href = hasCaseStudy(project) ? `/work/${project.id}/` : liveUrl ?? repoUrl;
+const external = !hasCaseStudy(project) && Boolean(href);
+---
+<article class:list={['card', { 'card--no-cover': !cover }]} data-glow-item>
+  {cover && <img class="card__cover" src={cover} alt={coverAlt ?? ''} width="400" height="250" loading="lazy" decoding="async" style={`view-transition-name: cover-${project.id}`} />}
+  <div class="card__body">
+    <h3 class="card__title" style={`view-transition-name: title-${project.id}`}>
+      {href ? <a href={href} rel={external ? 'noopener' : undefined}>{title}<span class="card__arrow" aria-hidden="true"></span></a> : title}
+    </h3>
+    <p class="card__summary">{summary}</p>
+    <p class="card__flow mono">{flow.join(' ──▶ ')}{flow.length > 0 ? ' · ' : ''}{year}</p>
+  </div>
+</article>
+
+<style>
+  .card { position: relative; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 28px; padding: 20px; margin-inline: -20px; border-radius: 12px; }
+  .card:hover { background: var(--panel); }
+  .card--no-cover { grid-template-columns: minmax(0, 1fr); }
+  .card__cover { width: 200px; aspect-ratio: 8 / 5; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); }
+  .card__body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .card__title { font-size: 18px; font-weight: 600; }
+  .card__title a { text-decoration: none; }
+  .card__title a::after { content: ''; position: absolute; inset: 0; }
+  .card__arrow::before { content: " ↗"; color: var(--accent); }
+  .card::before {
+    content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+    background: radial-gradient(150px circle at var(--mx, -999px) var(--my, -999px), color-mix(in srgb, var(--accent) 55%, transparent), transparent 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    opacity: var(--glow, 0); transition: opacity 0.3s ease;
+  }
+  .card__title { width: fit-content; }
+  .card__summary { font-size: 15px; color: var(--muted); }
+  .card__flow { font-size: 12px; color: var(--accent); }
+  @media (max-width: 1024px) {
+    /* The shell only has a 16px gutter here, so the hover background may bleed 12px at most. */
+    .card { margin-inline: -12px; padding-inline: 12px; }
+  }
+  @media (max-width: 640px) {
+    .card { grid-template-columns: minmax(0, 1fr); margin-inline: 0; padding-inline: 0; }
+    .card__cover { width: 100%; }
+  }
+</style>

@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ProjectCard from './ProjectCard.astro';
+interface Props { featured: CollectionEntry<'projects'>[]; earlier: CollectionEntry<'projects'>[] }
+const { featured, earlier } = Astro.props;
+---
+{(featured.length > 0 || earlier.length > 0) && (
+  <section id="work" class="work" aria-labelledby="work-heading" data-glow-group>
+    <h2 id="work-heading" class="label">Selected work</h2>
+    {featured.map((p) => <ProjectCard project={p} />)}
+    {earlier.length > 0 && (
+      <p class="work__earlier">
+        <span class="work__earlier-label">Earlier:</span>{' '}
+        {earlier.map((p, i) => <>{i > 0 && ' · '}<span>{p.data.title} ({p.data.stack.slice(0, 2).join(', ')}, {p.data.year})</span></>)}
+      </p>
+    )}
+  </section>
+)}
+
+<style>
+  .work { display: flex; flex-direction: column; gap: 12px; }
+  .work__earlier { margin-top: 12px; font-size: 14px; color: var(--muted); }
+  .work__earlier-label { color: var(--fg); font-weight: 600; }
+</style>

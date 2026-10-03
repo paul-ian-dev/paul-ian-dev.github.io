@@ -1,0 +1,8 @@
+company: Marketing Decisions
+title: Backend Developer
+category: engineering
+start: "2026-01"
+end: null
+summary: Build and run Snowflake data pipelines in SQL and Python. Automate machine-learning workflows for customer segmentation and prediction, retrained on a schedule. Build integrations and data flows between the warehouse and marketing platforms such as Braze and Oracle Eloqua, and debug production issues across cloud logs.
+tags: [Snowflake, Python, Snowpark, SQL, Streamlit, PHP, Braze, Eloqua, Azure · KQL]
+order: 1

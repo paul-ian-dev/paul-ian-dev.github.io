@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import NotesList from '../../components/NotesList.astro';
+const notes = (await getCollection('notes', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+<Base title="Notes · Paul Ian Lim" description="Short write-ups of what Paul Ian Lim is learning and building.">
+  <main id="main" class="page">
+    <a class="mono back" href="/">← Paul Ian Lim</a>
+    <h1>Notes</h1>
+    {notes.length === 0 ? <p class="empty">No notes yet.</p> : <NotesList notes={notes} withHeading={false} />}
+  </main>
+</Base>
+
+<style>
+  .page { max-width: 72ch; margin: 0 auto; padding: 72px 16px 96px; display: flex; flex-direction: column; gap: 24px; }
+  h1 { font-size: 44px; font-weight: 800; letter-spacing: -0.03em; }
+  .back { font-size: 13px; color: var(--faint); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .empty { color: var(--muted); }
+</style>

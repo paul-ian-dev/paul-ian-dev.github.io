@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Page not found · Paul Ian Lim" description="This page does not exist.">
+  <main id="main" class="nf">
+    <p class="mono label">404 · no rows returned</p>
+    <h1>This page doesn't exist.</h1>
+    <a class="btn btn--primary" href="/">Back to the home page</a>
+  </main>
+</Base>
+
+<style>
+  .nf { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 20px; max-width: 72ch; margin: 0 auto; padding: 0 16px; }
+  h1 { font-size: clamp(32px, 6vw, 56px); font-weight: 800; letter-spacing: -0.03em; }
+</style>

@@ -1,0 +1,16 @@
+---
+interface Props { email: string }
+const { email } = Astro.props;
+---
+<div class="copy-email">
+  <span id="email-address" class="mono">{email}</span>
+  <button type="button" class="copy-email__btn" data-copy={email} aria-controls="email-address" aria-label="Copy email address" hidden>Copy</button>
+</div>
+
+<style>
+  .copy-email { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+  .copy-email__btn {
+    min-height: 44px; min-width: 44px; padding: 0 12px; border-radius: 6px; border: 1px solid var(--line);
+    background: transparent; color: var(--fg); font: 500 12px 'Chivo Mono', ui-monospace, monospace; cursor: pointer;
+  }
+</style>

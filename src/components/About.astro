@@ -1,0 +1,20 @@
+---
+import type { Profile } from '../content/schemas';
+import FlowStrip from './FlowStrip.astro';
+interface Props { profile: Profile }
+const { profile } = Astro.props;
+---
+<section id="about" class="about" aria-labelledby="about-heading">
+  <h2 id="about-heading" class="visually-hidden">About</h2>
+  <div class="about__build">
+    <p class="label">What I build</p>
+    <FlowStrip steps={profile.whatIBuild} />
+  </div>
+  {profile.about.map((para) => <p class="about__para">{para}</p>)}
+</section>
+
+<style>
+  .about { display: flex; flex-direction: column; gap: 22px; max-width: 64ch; }
+  .about__build { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .about__para { font-size: 17px; line-height: 1.7; color: var(--muted); }
+</style>
