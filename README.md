@@ -25,7 +25,5 @@ Settings → Pages → Build and deployment → Source: **GitHub Actions**.
 
     npm install
     npm run dev          # http://localhost:4321
-    npm test             # unit tests
-    npm run test:e2e     # browser tests (builds first)
 
 The 2021 site is preserved at tag `v2021`.
