@@ -62,7 +62,13 @@ const { profile, nav } = Astro.props;
   .identity__actions { display: flex; gap: 10px; flex-wrap: wrap; }
   .identity__email { display: inline-flex; align-items: center; min-height: 44px; width: fit-content; font-size: 15px; color: var(--muted); }
   @media (min-width: 1025px) {
-    .identity { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    /* Spacing shrinks with the window height, so the column compacts (e.g. when zoomed in) instead of overflowing. */
+    .identity { gap: clamp(14px, 3.5vh, 32px); padding: clamp(32px, 11vh, 96px) 0 clamp(24px, 7vh, 64px); }
+    .identity__intro { gap: clamp(6px, 1.4vh, 12px); }
+  }
+  /* Pinned only while the compact column fits the window; otherwise it scrolls with the page, never on its own. */
+  @media (min-width: 1025px) and (min-height: 640px) {
+    .identity { position: sticky; top: 0; height: 100vh; }
   }
   @media (max-width: 1024px) {
     .identity { gap: 24px; padding: 56px 0 0; }

@@ -15,7 +15,7 @@ const { items } = Astro.props;
 <style>
   .lineage { display: flex; flex-direction: column; }
   .lineage__item {
-    display: flex; align-items: center; gap: 16px; min-height: 44px; width: fit-content;
+    display: flex; align-items: center; gap: 16px; min-height: clamp(32px, 5vh, 44px); width: fit-content;
     font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--faint); text-decoration: none;
   }
