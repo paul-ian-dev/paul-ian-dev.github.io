@@ -42,7 +42,6 @@ export const projectSchema = z.object({
   year: z.number().int(),
   context: optional(z.string()),
   stack: z.array(z.string()).default([]),
-  flow: z.array(z.string()).default([]),
   cover: optional(z.string()),
   coverAlt: optional(z.string()),
   liveUrl: optional(z.url()),

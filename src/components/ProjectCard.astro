@@ -3,18 +3,19 @@ import type { CollectionEntry } from 'astro:content';
 import { hasCaseStudy } from './work-utils';
 interface Props { project: CollectionEntry<'projects'> }
 const { project } = Astro.props;
-const { title, summary, year, flow, cover, coverAlt, liveUrl, repoUrl } = project.data;
+const { title, summary, year, stack, cover, coverAlt, liveUrl, repoUrl } = project.data;
 const href = hasCaseStudy(project) ? `/work/${project.id}/` : liveUrl ?? repoUrl;
 const external = !hasCaseStudy(project) && Boolean(href);
 ---
-<article class:list={['card', { 'card--no-cover': !cover }]} data-glow-item>
+<article class:list={['card', { 'card--no-cover': !cover }]}>
   {cover && <img class="card__cover" src={cover} alt={coverAlt ?? ''} width="400" height="250" loading="lazy" decoding="async" style={`view-transition-name: cover-${project.id}`} />}
   <div class="card__body">
+    <p class="card__year">{year}</p>
     <h3 class="card__title" style={`view-transition-name: title-${project.id}`}>
       {href ? <a href={href} rel={external ? 'noopener' : undefined}>{title}<span class="card__arrow" aria-hidden="true"></span></a> : title}
     </h3>
     <p class="card__summary">{summary}</p>
-    <p class="card__flow">{flow.join(' → ')}{flow.length > 0 ? ' · ' : ''}{year}</p>
+    {stack.length > 0 && <ul class="card__tags">{stack.map((s) => <li class="tag">{s}</li>)}</ul>}
   </div>
 </article>
 
@@ -28,16 +29,10 @@ const external = !hasCaseStudy(project) && Boolean(href);
   .card__title a { text-decoration: none; }
   .card__title a::after { content: ''; position: absolute; inset: 0; }
   .card__arrow::before { content: " ↗"; color: var(--accent); }
-  .card::before {
-    content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
-    background: radial-gradient(150px circle at var(--mx, -999px) var(--my, -999px), color-mix(in srgb, var(--accent) 55%, transparent), transparent 70%);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
-            mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-    opacity: var(--glow, 0); transition: opacity 0.3s ease;
-  }
   .card__title { width: fit-content; }
   .card__summary { font-size: 15px; color: var(--muted); }
-  .card__flow { font-size: 13px; font-weight: 500; color: var(--accent); }
+  .card__year { font-size: 13px; color: var(--faint); font-variant-numeric: tabular-nums; }
+  .card__tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 0; padding: 0; list-style: none; }
   @media (max-width: 1024px) {
     /* The shell only has a 16px gutter here, so the hover background may bleed 12px at most. */
     .card { margin-inline: -12px; padding-inline: 12px; }

@@ -2,9 +2,8 @@
 import type { Profile } from '../content/schemas';
 interface Props { steps: Profile['whatIBuild'] }
 const { steps } = Astro.props;
-const hubIndex = Math.max(0, steps.findIndex((s) => s.hub));
 ---
-<div class="flow" data-flow="strip" data-change-index={hubIndex}>
+<div class="flow">
   <ol class="flow__list">
     {steps.map((step, i) => (
       <li class="flow__step">
@@ -36,10 +35,8 @@ const hubIndex = Math.max(0, steps.findIndex((s) => s.hub));
   }
   .flow__label--hub { border-color: var(--accent); color: var(--accent); }
   .flow__caption { font-size: 12px; color: var(--faint); padding-left: 2px; }
-  /* Particles already show the direction, so the arrows step back to a faint guide while they run. */
-  .flow:has(:global(.flow-canvas)) .flow__arrow { opacity: 0.35; }
-  /* Too narrow for one row: wrapping put an arrow at the start of a line and sent particles through a caption.
-     Stack the steps instead, with fixed-width labels so the particle path runs straight down their centres. */
+  /* Too narrow for one row: wrapping would put an arrow at the start of a line.
+     Stack the steps instead, with fixed-width labels so the arrows run straight down their centres. */
   @container (max-width: 560px) {
     .flow__list, .flow__step { flex-direction: column; gap: 0; }
     .flow__step { align-items: flex-start; }

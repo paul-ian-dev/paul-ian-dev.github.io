@@ -12,16 +12,15 @@ export async function getStaticPaths() {
 interface Props { project: CollectionEntry<'projects'> }
 const { project } = Astro.props;
 const { Content } = await render(project);
-const { title, summary, year, context, stack, flow, liveUrl, repoUrl } = project.data;
+const { title, summary, year, context, stack, liveUrl, repoUrl } = project.data;
 ---
 <Base title={`${title} · Paul Ian Lim`} description={summary}>
   <main id="main" class="case">
     <a class="case__back" href="/#work">← Back to all work</a>
-    <p class="label">{[context, year].filter(Boolean).join(' · ')}</p>
+    <p class="label">{[context, year].filter(Boolean).join(', ')}</p>
     <h1 class="case__title" style={`view-transition-name: title-${project.id}`}>{title}</h1>
     <p class="case__summary">{summary}</p>
-    {flow.length > 0 && <p class="case__flow">{flow.join(' → ')}</p>}
-    <ul class="case__tags">{stack.map((s) => <li class="tag">{s}</li>)}</ul>
+    {stack.length > 0 && <ul class="case__tags">{stack.map((s) => <li class="tag">{s}</li>)}</ul>}
     <div class="case__links">
       {liveUrl && <a class="btn btn--primary" href={liveUrl} rel="noopener">Visit live site ↗</a>}
       {repoUrl && <a class="btn" href={repoUrl} rel="noopener">View code ↗</a>}
@@ -36,7 +35,6 @@ const { title, summary, year, context, stack, flow, liveUrl, repoUrl } = project
   .case__back { font-size: 13px; color: var(--faint); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   .case__title { font-size: clamp(34px, 5vw, 48px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
   .case__summary { font-size: 18px; color: var(--muted); }
-  .case__flow { font-size: 14px; font-weight: 500; color: var(--accent); }
   .case__tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
   .case__links { display: flex; gap: 10px; flex-wrap: wrap; }
   .case__cover { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); }

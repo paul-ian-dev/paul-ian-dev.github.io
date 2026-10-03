@@ -14,7 +14,7 @@ const tiers = [
     {tiers.filter(([, items]) => items.length > 0).map(([label, items]) => (
       <div class="stack__tier">
         <dt>{label}</dt>
-        <dd>{items.join(' · ')}</dd>
+        <dd>{items.join(', ')}</dd>
       </div>
     ))}
   </dl>

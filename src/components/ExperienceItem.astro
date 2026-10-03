@@ -8,7 +8,7 @@ const { company, title, start, end, summary, tags } = entry.data;
 <li class:list={['xp', { 'xp--compact': compact }]}>
   <span class="xp__node" aria-hidden="true"></span>
   <p class="xp__dates">{formatRange(start, end)}</p>
-  <h4 class="xp__title">{title} · {company}</h4>
+  <h4 class="xp__title">{title}<span class="xp__company"><span class="visually-hidden">, </span>{company}</span></h4>
   {!compact && summary && <p class="xp__summary">{summary}</p>}
   {!compact && tags.length > 0 && (
     <ul class="xp__tags">{tags.map((t) => <li class="tag">{t}</li>)}</ul>
@@ -24,23 +24,13 @@ const { company, title, start, end, summary, tags } = entry.data;
   .xp:first-child .xp__node { left: -36px; top: 3px; width: 16px; height: 16px; background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 4px var(--bg); }
   .xp__dates { font-size: 13px; font-variant-numeric: tabular-nums; color: var(--faint); }
   .xp__title { font-size: 18px; font-weight: 600; }
+  .xp__company { display: block; font-size: 15px; font-weight: 500; color: var(--muted); }
   .xp__summary { font-size: 15px; color: var(--muted); max-width: 64ch; }
   .xp__tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 0; padding: 0; list-style: none; }
   .xp--compact { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
   .xp--compact .xp__title { font-size: 15px; font-weight: 500; }
+  .xp--compact .xp__company { display: inline; font-size: inherit; }
+  .xp--compact .xp__company::before { content: ', '; }
+  .xp--compact .xp__company .visually-hidden { display: none; }
   .xp--compact .xp__node { display: none; }
-  @keyframes node-lit { to { background: var(--accent); border-color: var(--accent); } }
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .xp:not(.xp--compact) .xp__node { animation: node-lit linear both; }
-      /* Separate rule so the minifier can't fold animation-timeline into the shorthand. */
-      li.xp:not(.xp--compact) .xp__node { animation-timeline: view(); animation-range: cover 38% cover 42%; }
-    }
-  }
-  @supports not (animation-timeline: view()) {
-    .xp:not(.xp--compact) .xp__node { background: var(--accent); border-color: var(--accent); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .xp:not(.xp--compact) .xp__node { background: var(--accent); border-color: var(--accent); }
-  }
 </style>

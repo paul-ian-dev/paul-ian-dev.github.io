@@ -20,7 +20,6 @@ const hasOther = other.length > 0;
     <div id="panel-engineering" class="tabs__panel" data-panel>
       <h3 class:list={['tabs__heading', { 'visually-hidden': !hasOther }]}>Engineering</h3>
       <div class="timeline-wrap">
-        <span class="timeline__fill" aria-hidden="true"></span>
         <ol class="timeline">{engineering.map((e) => <ExperienceItem entry={e} />)}</ol>
       </div>
     </div>
@@ -47,21 +46,11 @@ const hasOther = other.length > 0;
   :global(.tabs.is-enhanced) .tabs__heading {
     position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
   }
-  .timeline-wrap { position: relative; view-timeline-name: --xp; }
-  .timeline-wrap::before, .timeline__fill {
-    position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; border-radius: 2px;
+  .timeline-wrap { position: relative; }
+  .timeline-wrap::before {
+    content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; border-radius: 2px; background: var(--line);
   }
-  .timeline-wrap::before { content: ''; background: var(--line); }
-  .timeline__fill { background: var(--accent); transform-origin: top; transform: scaleY(1); }
   .timeline { position: relative; display: flex; flex-direction: column; gap: 40px; margin: 0; padding: 0 0 0 36px; }
-  @keyframes timeline-fill { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .timeline__fill { animation: timeline-fill linear both; }
-      /* Separate rule: the minifier would otherwise fold animation-timeline into the shorthand, which Chrome rejects. */
-      .timeline-wrap .timeline__fill { animation-timeline: --xp; animation-range: entry 60% cover 55%; }
-    }
-  }
   .other-list { display: flex; flex-direction: column; gap: 14px; margin: 0; padding: 0; }
   .tabs__panel { display: flex; flex-direction: column; }
   .tabs:not(.is-enhanced) .tabs__panel + .tabs__panel { margin-top: 40px; }

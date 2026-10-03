@@ -2,7 +2,6 @@
 import type { Profile } from '../content/schemas';
 import type { NavItem } from '../lib/nav';
 import LineageNav from './LineageNav.astro';
-import CopyEmail from './CopyEmail.astro';
 interface Props { profile: Profile; nav: NavItem[] }
 const { profile, nav } = Astro.props;
 ---
@@ -10,14 +9,11 @@ const { profile, nav } = Astro.props;
   <div class="identity__intro">
     <p class="identity__greeting">
       {profile.greeting.map((g, i) => (
-        <>{i > 0 && <span aria-hidden="true"> · </span>}<span lang={g.lang}>{g.text}</span></>
+        <span lang={g.lang}>{g.text}</span>
       ))}
     </p>
     <h1 class="identity__name">{profile.name}</h1>
-    <p class="identity__headline">
-      <span class="visually-hidden">{profile.headline}</span>
-      <span aria-hidden="true" data-decode={profile.headline}>{profile.headline}</span>
-    </p>
+    <p class="identity__headline">{profile.headline}</p>
     <p class="identity__pitch">{profile.pitch}</p>
     <p class="label">{profile.location}</p>
   </div>
@@ -27,7 +23,7 @@ const { profile, nav } = Astro.props;
     <a class="btn" href={profile.linkedin} rel="me">LinkedIn</a>
     <a class="btn" href={profile.github} rel="me">GitHub</a>
   </div>
-  <CopyEmail email={profile.email} />
+  <a class="identity__email" href={`mailto:${profile.email}`}>{profile.email}</a>
 </header>
 
 <style>
@@ -57,12 +53,14 @@ const { profile, nav } = Astro.props;
        words cost ~300 KB of render-blocking CSS. */
     font-size: 14px; color: var(--faint);
   }
+  .identity__greeting { display: flex; flex-wrap: wrap; gap: 2px 14px; }
   /* Keep each greeting word whole: the body allows breaking anywhere, which split 안녕하세요. */
   .identity__greeting [lang] { white-space: nowrap; }
   .identity__name { font-size: clamp(40px, 5vw, 56px); font-weight: 800; line-height: 1; letter-spacing: -0.03em; }
   .identity__headline { font-size: 19px; font-weight: 600; color: var(--accent); }
   .identity__pitch { font-size: 16px; color: var(--muted); max-width: 32ch; }
   .identity__actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .identity__email { display: inline-flex; align-items: center; min-height: 44px; width: fit-content; font-size: 15px; color: var(--muted); }
   @media (min-width: 1025px) {
     .identity { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
   }

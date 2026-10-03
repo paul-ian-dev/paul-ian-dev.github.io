@@ -6,14 +6,14 @@ interface Props { featured: CollectionEntry<'projects'>[]; earlier: CollectionEn
 const { featured, earlier } = Astro.props;
 ---
 {(featured.length > 0 || earlier.length > 0) && (
-  <section id="work" class="work" aria-labelledby="work-heading" data-glow-group>
+  <section id="work" class="work" aria-labelledby="work-heading">
     <h2 id="work-heading" class="label">Selected work</h2>
     {featured.map((p) => <ProjectCard project={p} />)}
     {earlier.length > 0 && (
-      <p class="work__earlier">
-        <span class="work__earlier-label">Earlier:</span>{' '}
-        {earlier.map((p, i) => <>{i > 0 && ' · '}<span>{earlierLine(p.data)}</span></>)}
-      </p>
+      <div class="work__earlier">
+        <h3 class="work__earlier-label">Earlier projects</h3>
+        <ul>{earlier.map((p) => <li>{earlierLine(p.data)}</li>)}</ul>
+      </div>
     )}
   </section>
 )}
@@ -21,5 +21,6 @@ const { featured, earlier } = Astro.props;
 <style>
   .work { display: flex; flex-direction: column; gap: 12px; }
   .work__earlier { margin-top: 12px; font-size: 14px; color: var(--muted); }
-  .work__earlier-label { color: var(--fg); font-weight: 600; }
+  .work__earlier-label { font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 4px; }
+  .work__earlier ul { margin: 0; padding: 0; list-style: none; }
 </style>

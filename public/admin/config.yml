@@ -91,7 +91,6 @@ collections:
       - { name: year, label: Year, widget: number, value_type: int }
       - { name: context, label: "Context (e.g. PRECISE, Personal project)", widget: string, required: false }
       - { name: stack, label: Stack, widget: list, required: false }
-      - { name: flow, label: "Flow line steps (e.g. Upload, Sanity, React feed)", widget: list, required: false }
       - { name: cover, label: Screenshot, widget: image, required: false }
       - { name: coverAlt, label: Screenshot description, widget: string, required: false }
       - { name: liveUrl, label: Live site URL, widget: string, required: false }
