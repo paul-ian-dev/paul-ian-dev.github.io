@@ -22,6 +22,6 @@ Selected sites:
 
 ![Home page of cnc.com.my, a metal machining company with the headline Celebrating The Best Machining Vendor](/uploads/zoewebs-cnc.jpg)
 
-![Home page of wellwoud.com, an online shop for aroma products with a gold tree logo above a forest photo](/uploads/zoewebs-wellwoud.jpg)
+![Home page of wellwoud.com, an aroma products shop with the headline Empowering Natural Healing over a forest photo, beside an embedded video](/uploads/zoewebs-wellwoud.jpg)
 
 I also ran online training for clients in Malaysia, China and the United States, in English and Chinese, and helped new interns get started with WordPress and Elementor.
