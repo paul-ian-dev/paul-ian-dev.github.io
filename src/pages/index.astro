@@ -8,7 +8,7 @@ import Work from '../components/Work.astro';
 import StackTiers from '../components/StackTiers.astro';
 import Credentials from '../components/Credentials.astro';
 import NotesList from '../components/NotesList.astro';
-import BuildLog from '../components/BuildLog.astro';
+import Footer from '../components/Footer.astro';
 import { buildNav } from '../lib/nav';
 import { byOrder } from '../lib/format';
 
@@ -55,7 +55,7 @@ const jsonLd = {
       <StackTiers stack={profile.stack} />
       <NotesList notes={notes} limit={3} />
       <Credentials credentials={credentials} />
-      <BuildLog />
+      <Footer name={profile.name} />
     </main>
   </div>
 </Base>
