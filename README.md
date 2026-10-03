@@ -27,5 +27,3 @@ Every push to `master` runs `.github/workflows/deploy.yml`, which builds the sit
     npm run dev          # http://localhost:4321, live reload
     npm run build        # production build into dist/
     npm run preview      # serve dist/ at http://localhost:4321
-
-The 2021 site is preserved at tag `v2021`.
