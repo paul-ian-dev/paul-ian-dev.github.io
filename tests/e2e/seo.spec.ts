@@ -18,3 +18,12 @@ test('og.png, robots.txt and sitemap exist', async ({ request }) => {
   expect(await (await request.get('/robots.txt')).text()).toContain('Sitemap: https://paul-ian-dev.github.io/sitemap-index.xml');
   expect((await request.get('/sitemap-index.xml')).status()).toBe(200);
 });
+
+test('render-blocking CSS on the home page stays small', async ({ page, request }) => {
+  await page.goto('/');
+  const hrefs = await page.locator('link[rel="stylesheet"]').evaluateAll((els) => els.map((el) => (el as HTMLLinkElement).href));
+  let bytes = 0;
+  for (const href of hrefs) bytes += (await (await request.get(href)).body()).length;
+  // Bundling CJK web fonts for the greeting once pushed this past 300 KB and cost ~2 s of mobile first paint.
+  expect(bytes).toBeLessThan(60_000);
+});

@@ -49,7 +49,9 @@ const { profile, nav } = Astro.props;
   @media (max-width: 1024px) { .identity::before, .identity::after { content: none; } }
   .identity__intro { display: flex; flex-direction: column; gap: 12px; }
   .identity__greeting {
-    font-family: 'Chivo Mono', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', ui-monospace, monospace;
+    /* CJK words use the visitor's system fonts (picked per word by its lang attribute). Web fonts for three words
+       cost ~300 KB of render-blocking CSS. */
+    font-family: 'Chivo Mono', system-ui, sans-serif;
     font-size: 13px; color: var(--faint);
   }
   /* Keep each greeting word whole: the body allows breaking anywhere, which split 안녕하세요. */
