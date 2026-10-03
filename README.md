@@ -17,13 +17,15 @@ Tips:
 - Screenshots: export at about 1600px wide as WebP or compressed PNG before uploading.
 - Anything in `[square brackets]` is a placeholder. The build log lists any that remain.
 
-## One-time setup
+## Deployment
 
-Settings → Pages → Build and deployment → Source: **GitHub Actions**.
+Every push to `master` runs `.github/workflows/deploy.yml`, which builds the site and publishes it to GitHub Pages (Settings → Pages → Source: **GitHub Actions**). A failed build leaves the previous version live; the error is in the Actions tab.
 
 ## Local development
 
     npm install
-    npm run dev          # http://localhost:4321
+    npm run dev          # http://localhost:4321, live reload
+    npm run build        # production build into dist/
+    npm run preview      # serve dist/ at http://localhost:4321
 
 The 2021 site is preserved at tag `v2021`.
