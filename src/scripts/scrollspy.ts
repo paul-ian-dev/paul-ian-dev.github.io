@@ -1,12 +1,16 @@
 export function initScrollSpy(): void {
   const links = [...document.querySelectorAll<HTMLAnchorElement>('.lineage__item')];
   if (!links.length) return;
+  const nav = links[0].parentElement;
   const setActive = (id: string) => {
     for (const a of links) {
       const on = a.hash === `#${id}`;
       a.classList.toggle('is-active', on);
-      if (on) a.setAttribute('aria-current', 'true');
-      else a.removeAttribute('aria-current');
+      if (on) {
+        a.setAttribute('aria-current', 'true');
+        // Fill the rail down to the middle of the current item.
+        nav?.style.setProperty('--fill', `${a.offsetTop + a.offsetHeight / 2}px`);
+      } else a.removeAttribute('aria-current');
     }
   };
   const sections = links

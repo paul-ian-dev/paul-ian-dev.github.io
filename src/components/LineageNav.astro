@@ -4,25 +4,35 @@ interface Props { items: NavItem[] }
 const { items } = Astro.props;
 ---
 <nav class="lineage" aria-label="Sections">
+  <span class="lineage__fill" aria-hidden="true"></span>
   {items.map((item, i) => (
     <a class:list={['lineage__item', { 'is-active': i === 0 }]} href={`#${item.id}`} aria-current={i === 0 ? 'true' : undefined}>
-      <span class="lineage__line" aria-hidden="true"></span>
-      <span class="lineage__label">{item.label}</span>
+      {item.label}
     </a>
   ))}
 </nav>
 
 <style>
-  .lineage { display: flex; flex-direction: column; }
+  /* A pipeline rail: the line fills with the accent colour down to the current section (see scrollspy.ts). */
+  .lineage { position: relative; display: flex; flex-direction: column; padding-left: 24px; --fill: 0px; }
+  .lineage::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; border-radius: 2px; background: var(--line);
+  }
+  .lineage__fill {
+    position: absolute; left: 0; top: 0; width: 2px; height: var(--fill); border-radius: 2px; background: var(--accent);
+    transition: height 0.35s ease;
+  }
+  .lineage__fill::after {
+    content: ''; position: absolute; left: 50%; bottom: -4px; width: 8px; height: 8px; border-radius: 50%;
+    transform: translateX(-50%); background: var(--accent); box-shadow: 0 0 0 3px var(--bg);
+  }
   .lineage__item {
-    display: flex; align-items: center; gap: 16px; min-height: clamp(32px, 5vh, 44px); width: fit-content;
+    display: flex; align-items: center; min-height: clamp(32px, 5vh, 44px); width: fit-content;
     font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--faint); text-decoration: none;
   }
-  .lineage__line { width: 32px; height: 1px; background: currentColor; transition: width 0.2s ease; }
   .lineage__item:hover, .lineage__item.is-active { color: var(--fg); }
-  .lineage__item:hover .lineage__line, .lineage__item.is-active .lineage__line { width: 64px; }
-  @media (prefers-reduced-motion: reduce) { .lineage__line { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .lineage__fill { transition: none; } }
   /* On one-column screens the page is short enough to scroll; section headings stick instead (see index.astro). */
   @media (max-width: 1024px) { .lineage { display: none; } }
 </style>
