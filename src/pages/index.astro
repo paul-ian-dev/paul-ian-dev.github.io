@@ -76,10 +76,14 @@ const jsonLd = {
 </script>
 
 <style>
-  .shell { display: grid; grid-template-columns: 470px minmax(0, 1fr); min-height: 100vh; }
-  .content { display: flex; flex-direction: column; gap: 88px; padding: 96px 104px 80px 72px; min-width: 0; }
+  /* Centred on wide screens; both columns share a 1280px container. */
+  .shell {
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: 64px;
+    max-width: 1280px; min-height: 100vh; margin-inline: auto; padding-inline: 64px;
+  }
+  .content { display: flex; flex-direction: column; gap: 88px; padding: 96px 0 80px; min-width: 0; }
   @media (max-width: 1024px) {
-    .shell { grid-template-columns: minmax(0, 1fr); padding-inline: 16px; }
+    .shell { grid-template-columns: minmax(0, 1fr); column-gap: 0; padding-inline: 16px; }
     .content { padding: 48px 0 64px; gap: 72px; }
   }
 </style>

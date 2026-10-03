@@ -32,14 +32,18 @@ const { profile, nav } = Astro.props;
 
 <style>
   .identity {
-    display: flex; flex-direction: column; gap: 32px; padding: 96px 48px 64px 96px;
-    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; gap: 32px; padding: 96px 0 64px;
   }
   .identity { position: relative; isolation: isolate; }
   .identity::before, .identity::after {
     content: ''; position: absolute; inset: 0; pointer-events: none; z-index: -1; background-size: 22px 22px;
   }
   .identity::before { background-image: radial-gradient(color-mix(in srgb, var(--line) 70%, transparent) 1px, transparent 1.4px); }
+  /* The column no longer reaches the page edge, so the grid fades out at both sides instead of stopping on a line. */
+  .identity::before {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 75%, transparent);
+            mask-image: linear-gradient(to right, transparent, #000 12%, #000 75%, transparent);
+  }
   .identity::after {
     background-image: radial-gradient(color-mix(in srgb, var(--accent) 42%, var(--bg)) 1.2px, transparent 1.6px);
     -webkit-mask-image: radial-gradient(130px circle at var(--mx, -999px) var(--my, -999px), #000 0%, rgb(0 0 0 / 0.35) 40%, transparent 75%);
@@ -49,10 +53,9 @@ const { profile, nav } = Astro.props;
   @media (max-width: 1024px) { .identity::before, .identity::after { content: none; } }
   .identity__intro { display: flex; flex-direction: column; gap: 12px; }
   .identity__greeting {
-    /* CJK words use the visitor's system fonts (picked per word by its lang attribute). Web fonts for three words
-       cost ~300 KB of render-blocking CSS. */
-    font-family: 'Chivo Mono', system-ui, sans-serif;
-    font-size: 13px; color: var(--faint);
+    /* CJK words fall back to the visitor's system fonts (picked per word by its lang attribute). Web fonts for three
+       words cost ~300 KB of render-blocking CSS. */
+    font-size: 14px; color: var(--faint);
   }
   /* Keep each greeting word whole: the body allows breaking anywhere, which split 안녕하세요. */
   .identity__greeting [lang] { white-space: nowrap; }
