@@ -3,8 +3,8 @@ import type { Profile } from '../content/schemas';
 interface Props { stack: Profile['stack'] }
 const { stack } = Astro.props;
 const tiers = [
-  ['At work', stack.work],
-  ['In projects', stack.projects],
+  ['Work', stack.work],
+  ['Personal', stack.projects],
   ['Learning', stack.learning],
 ] as const;
 ---

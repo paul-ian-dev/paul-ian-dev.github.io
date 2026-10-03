@@ -47,8 +47,8 @@ collections:
             label: Stack
             widget: object
             fields:
-              - { name: work, label: At work, widget: list }
-              - { name: projects, label: In projects, widget: list }
+              - { name: work, label: Work, widget: list }
+              - { name: projects, label: Personal, widget: list }
               - { name: learning, label: Learning, widget: list }
 
   - name: experience
