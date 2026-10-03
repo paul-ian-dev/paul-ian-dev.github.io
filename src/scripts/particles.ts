@@ -20,8 +20,14 @@ export function startFlow(wrap: HTMLElement, nodeSelector: string, opts: FlowOpt
   const ctx = canvas.getContext('2d');
   if (!ctx) return { stop: () => canvas.remove() };
 
-  const css = getComputedStyle(document.documentElement);
-  const colour = { raw: css.getPropertyValue('--raw').trim(), accent: css.getPropertyValue('--accent').trim() };
+  const colour = { raw: '', accent: '' };
+  const readColours = () => {
+    const css = getComputedStyle(document.documentElement);
+    colour.raw = css.getPropertyValue('--raw').trim();
+    colour.accent = css.getPropertyValue('--accent').trim();
+  };
+  readColours();
+  window.addEventListener('themechange', readColours);
   const parts: Particle[] = Array.from({ length: opts.count }, () => ({
     d: Math.random(), v: opts.speed * (0.6 + Math.random() * 0.8), off: (Math.random() - 0.5) * opts.spread,
     ph: Math.random() * Math.PI * 2, r: 1.1 + Math.random() * 1.2,
@@ -111,6 +117,7 @@ export function startFlow(wrap: HTMLElement, nodeSelector: string, opts: FlowOpt
       ro.disconnect();
       io.disconnect();
       document.removeEventListener('visibilitychange', wake);
+      window.removeEventListener('themechange', readColours);
       canvas.remove();
     },
   };

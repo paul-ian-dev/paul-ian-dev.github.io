@@ -14,5 +14,9 @@ const kebab = (key: string) => key.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}
 const vars = (t: Theme) => Object.entries(t).map(([k, v]) => `--${kebab(k)}:${v};`).join('');
 
 export function tokensCss(): string {
-  return `:root{${vars(dark)}color-scheme:dark}@media (prefers-color-scheme: light){:root{${vars(light)}color-scheme:light}}`;
+  // The system setting decides until the visitor picks a theme with the toggle (data-theme on <html>).
+  const lightTheme = `${vars(light)}color-scheme:light`;
+  return `:root{${vars(dark)}color-scheme:dark}`
+    + `@media (prefers-color-scheme: light){:root:not([data-theme=dark]){${lightTheme}}}`
+    + `:root[data-theme=light]{${lightTheme}}`;
 }

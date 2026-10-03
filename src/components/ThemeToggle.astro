@@ -1,0 +1,54 @@
+---
+import { dark, light } from '../styles/tokens';
+---
+<button type="button" class="theme-toggle" data-theme-toggle data-dark-bg={dark.bg} data-light-bg={light.bg} aria-label="Switch theme" hidden>
+  <svg class="theme-toggle__sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+    <circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8" />
+    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+  </svg>
+  <svg class="theme-toggle__moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+    <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+  </svg>
+</button>
+
+<script>
+  const root = document.documentElement;
+  const btn = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const system = window.matchMedia('(prefers-color-scheme: light)');
+
+  const apply = (theme: 'light' | 'dark') => {
+    root.dataset.theme = theme;
+    if (btn) {
+      btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+      const bg = theme === 'dark' ? btn.dataset.darkBg : btn.dataset.lightBg;
+      document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((m) => { if (bg) m.content = bg; });
+    }
+    window.dispatchEvent(new Event('themechange'));
+  };
+  const stored = () => { try { return localStorage.getItem('theme'); } catch { return null; } };
+
+  if (btn) {
+    btn.hidden = false;
+    apply(root.dataset.theme === 'light' ? 'light' : 'dark');
+    btn.addEventListener('click', () => {
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      try { localStorage.setItem('theme', next); } catch {}
+      apply(next);
+    });
+  }
+  // Until the visitor picks a theme, follow the system setting live.
+  system.addEventListener('change', (e) => { if (!stored()) apply(e.matches ? 'light' : 'dark'); });
+</script>
+
+<style>
+  .theme-toggle {
+    position: fixed; top: 16px; right: 16px; z-index: 50; display: grid; place-items: center;
+    width: 44px; height: 44px; padding: 0; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--bg); color: var(--muted);
+  }
+  .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+  .theme-toggle[hidden] { display: none; }
+  /* Show what a click switches to: the sun in dark mode, the moon in light mode. */
+  :global(:root[data-theme='light']) .theme-toggle__sun,
+  :global(:root[data-theme='dark']) .theme-toggle__moon { display: none; }
+</style>
