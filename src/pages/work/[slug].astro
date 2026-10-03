@@ -13,6 +13,8 @@ interface Props { project: CollectionEntry<'projects'> }
 const { project } = Astro.props;
 const { Content } = await render(project);
 const { title, summary, year, context, stack, liveUrl, repoUrl } = project.data;
+// A cover that the case study already shows in its text would appear twice.
+const showCover = Boolean(project.data.cover) && !project.body?.includes(project.data.cover!);
 ---
 <Base title={`${title} · Paul Ian Lim`} description={summary}>
   <main id="main" class="case">
@@ -25,7 +27,7 @@ const { title, summary, year, context, stack, liveUrl, repoUrl } = project.data;
       {liveUrl && <a class="btn btn--primary" href={liveUrl} rel="noopener">Visit live site ↗</a>}
       {repoUrl && <a class="btn" href={repoUrl} rel="noopener">View code ↗</a>}
     </div>
-    {project.data.cover && <img class="case__cover" src={project.data.cover} alt={project.data.coverAlt ?? ''} width="1200" height="750" style={`view-transition-name: cover-${project.id}`} />}
+    {showCover && <img class="case__cover" src={project.data.cover} alt={project.data.coverAlt ?? ''} width="1200" height="750" style={`view-transition-name: cover-${project.id}`} />}
     <div class="case__body"><Content /></div>
   </main>
 </Base>
@@ -41,4 +43,5 @@ const { title, summary, year, context, stack, liveUrl, repoUrl } = project.data;
   .case__body { margin-top: 16px; font-size: 16px; color: var(--muted); display: flex; flex-direction: column; gap: 14px; }
   .case__body :global(ul) { display: flex; flex-direction: column; gap: 6px; padding-left: 20px; margin: 0; }
   .case__body :global(a) { color: var(--fg); }
+  .case__body :global(img) { display: block; border-radius: 8px; border: 1px solid var(--line); }
 </style>

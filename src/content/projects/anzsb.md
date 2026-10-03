@@ -4,7 +4,6 @@ summary: A new website and membership management for a professional society, bui
 year: 2025
 context: PRECISE
 stack: [WordPress, Elementor, CiviCRM]
-flow: [Design, WordPress, CiviCRM]
 liveUrl: https://anzsb.asn.au
 cover: /uploads/anzsb.jpg
 coverAlt: Home page of the ANZSB website, with the society's kangaroo logo and the headline Advancing Biomechanics Research in Australia & New Zealand
