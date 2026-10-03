@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { byOrder, formatMonth, formatRange } from '../../src/lib/format';
+import { byOrder, earlierLine, formatMonth, formatRange } from '../../src/lib/format';
 
 describe('formatMonth', () => {
   it('turns YYYY-MM into YYYY.MM', () => expect(formatMonth('2025-02')).toBe('2025.02'));
@@ -18,4 +18,11 @@ describe('byOrder', () => {
     const items = [{ data: { order: 3 } }, { data: { order: 1 } }, { data: { order: 2 } }];
     expect(items.sort(byOrder).map((i) => i.data.order)).toEqual([1, 2, 3]);
   });
+});
+
+describe('earlierLine', () => {
+  it('shows the first two stack items and the year', () =>
+    expect(earlierLine({ title: 'Tetris', stack: ['Java', 'Swing', 'JUnit'], year: 2024 })).toBe('Tetris (Java, Swing, 2024)'));
+  it('shows only the year when the stack is empty', () =>
+    expect(earlierLine({ title: 'EdVenture', stack: [], year: 2022 })).toBe('EdVenture (2022)'));
 });

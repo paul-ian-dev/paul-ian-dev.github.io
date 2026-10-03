@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import ProjectCard from './ProjectCard.astro';
+import { earlierLine } from '../lib/format';
 interface Props { featured: CollectionEntry<'projects'>[]; earlier: CollectionEntry<'projects'>[] }
 const { featured, earlier } = Astro.props;
 ---
@@ -11,7 +12,7 @@ const { featured, earlier } = Astro.props;
     {earlier.length > 0 && (
       <p class="work__earlier">
         <span class="work__earlier-label">Earlier:</span>{' '}
-        {earlier.map((p, i) => <>{i > 0 && ' · '}<span>{p.data.title} ({p.data.stack.slice(0, 2).join(', ')}, {p.data.year})</span></>)}
+        {earlier.map((p, i) => <>{i > 0 && ' · '}<span>{earlierLine(p.data)}</span></>)}
       </p>
     )}
   </section>
