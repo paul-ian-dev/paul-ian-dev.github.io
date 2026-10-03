@@ -19,7 +19,7 @@ const hubIndex = Math.max(0, steps.findIndex((s) => s.hub));
 </div>
 
 <style>
-  .flow { position: relative; padding-block: 8px; }
+  .flow { position: relative; padding-block: 8px; container-type: inline-size; }
   .flow__list { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 12px 10px; margin: 0; padding: 0; list-style: none; }
   .flow__step { display: flex; align-items: flex-start; gap: 10px; }
   .flow__arrow { font-family: 'Chivo Mono', ui-monospace, monospace; font-size: 13px; color: var(--faint); padding-top: 9px; }
@@ -30,4 +30,23 @@ const hubIndex = Math.max(0, steps.findIndex((s) => s.hub));
   }
   .flow__label--hub { border-color: var(--accent); color: var(--accent); }
   .flow__caption { font-family: 'Chivo Mono', ui-monospace, monospace; font-size: 11px; color: var(--faint); padding-left: 2px; }
+  /* Particles already show the direction, so the arrows step back to a faint guide while they run. */
+  .flow:has(:global(.flow-canvas)) .flow__arrow { opacity: 0.35; }
+  /* Too narrow for one row: wrapping put an arrow at the start of a line and sent particles through a caption.
+     Stack the steps instead, with fixed-width labels so the particle path runs straight down their centres. */
+  @container (max-width: 560px) {
+    .flow__list, .flow__step { flex-direction: column; gap: 0; }
+    .flow__step { align-items: flex-start; }
+    .flow__arrow { position: relative; width: 9.5rem; height: 24px; padding: 0; font-size: 0; color: var(--faint); }
+    .flow__arrow::before {
+      content: ''; position: absolute; left: 50%; top: 3px; bottom: 8px; width: 1px; background: currentColor;
+    }
+    .flow__arrow::after {
+      content: ''; position: absolute; left: 50%; bottom: 3px; transform: translateX(-50%);
+      border: 4px solid transparent; border-bottom: 0; border-top: 6px solid currentColor;
+    }
+    .flow__node { flex-direction: row; align-items: center; gap: 14px; }
+    .flow__label { width: 9.5rem; flex-shrink: 0; text-align: center; }
+    .flow__caption { min-width: 0; padding-left: 0; }
+  }
 </style>
