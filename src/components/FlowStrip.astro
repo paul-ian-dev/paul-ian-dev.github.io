@@ -38,20 +38,11 @@ const hubIndex = Math.max(0, steps.findIndex((s) => s.hub));
   .flow__caption { font-size: 12px; color: var(--faint); padding-left: 2px; }
   /* Particles already show the direction, so the arrows step back to a faint guide while they run. */
   .flow:has(:global(.flow-canvas)) .flow__arrow { opacity: 0.35; }
-  /* Too narrow for one row: wrapping would put an arrow at the start of a line.
-     Stack the steps instead, with fixed-width labels so the arrows and particles run straight down their centres. */
+  /* Narrower desktop columns (around 1025-1200px windows): tighten the row so it still fits on one line. */
   @container (max-width: 560px) {
-    .flow__list, .flow__step { flex-direction: column; gap: 0; }
-    .flow__list { width: fit-content; margin-inline: auto; }
-    .flow__step { align-items: flex-start; }
-    .flow__arrow { width: 9.5rem; height: 24px; }
-    .flow__arrow::before { left: 50%; right: auto; top: 3px; bottom: 8px; width: 1px; height: auto; }
-    .flow__arrow::after {
-      left: 50%; right: auto; top: auto; bottom: 3px; transform: translateX(-50%);
-      border: 4px solid transparent; border-bottom: 0; border-top: 6px solid currentColor;
-    }
-    .flow__node { flex-direction: row; align-items: center; gap: 14px; }
-    .flow__label { width: 9.5rem; flex-shrink: 0; text-align: center; }
-    .flow__caption { min-width: 0; padding-left: 0; }
+    .flow__list { gap: 12px 6px; }
+    .flow__step { gap: 6px; }
+    .flow__arrow { width: 20px; }
+    .flow__label { padding: 8px 10px; font-size: 13px; }
   }
 </style>
