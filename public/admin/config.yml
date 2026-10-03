@@ -84,7 +84,7 @@ collections:
     create: true
     slug: "{{slug}}"
     summary: "{{title}} ({{year}})"
-    sortable_fields: [order, year]
+    sortable_fields: [year, order]
     fields:
       - { name: title, label: Title, widget: string }
       - { name: summary, label: One-line summary, widget: text }
@@ -97,7 +97,7 @@ collections:
       - { name: repoUrl, label: Code repository URL, widget: string, required: false }
       - { name: featured, label: Show in Selected work, widget: boolean, default: false }
       - { name: earlier, label: Show in the Earlier line, widget: boolean, default: false }
-      - { name: order, label: "Order (1 = first)", widget: number, value_type: int }
+      - { name: order, label: "Order within the same year (1 = first; projects are listed newest year first)", widget: number, value_type: int }
       - { name: body, label: "Case study (leave empty for no case-study page)", widget: markdown, required: false }
 
   - name: credentials

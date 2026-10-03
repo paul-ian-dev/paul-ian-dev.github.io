@@ -10,14 +10,14 @@ import Credentials from '../components/Credentials.astro';
 import NotesList from '../components/NotesList.astro';
 import Footer from '../components/Footer.astro';
 import { buildNav } from '../lib/nav';
-import { byOrder } from '../lib/format';
+import { byOrder, byYearDesc } from '../lib/format';
 
 const profileEntry = await getEntry('profile', 'profile');
 if (!profileEntry) throw new Error('src/content/profile/profile.yaml is missing');
 const profile = profileEntry.data;
 
 const experience = (await getCollection('experience')).sort(byOrder);
-const projects = (await getCollection('projects')).sort(byOrder);
+const projects = (await getCollection('projects')).sort(byYearDesc);
 const credentials = (await getCollection('credentials')).sort(byOrder);
 const notes = (await getCollection('notes', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());

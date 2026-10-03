@@ -6,6 +6,11 @@ export function formatRange(start: string, end?: string | null): string {
   return `${formatMonth(start)} → ${end ? formatMonth(end) : 'now'}`;
 }
 
+/** Newest year first; the CMS order field breaks ties within a year. */
+export function byYearDesc(a: { data: { year: number; order: number } }, b: { data: { year: number; order: number } }): number {
+  return b.data.year - a.data.year || a.data.order - b.data.order;
+}
+
 export function byOrder(a: { data: { order: number } }, b: { data: { order: number } }): number {
   return a.data.order - b.data.order;
 }

@@ -23,7 +23,8 @@ const external = !hasCaseStudy(project) && Boolean(href);
   .card { position: relative; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 28px; padding: 20px; margin-inline: -20px; border-radius: 12px; }
   .card:hover { background: var(--panel); }
   .card--no-cover { grid-template-columns: minmax(0, 1fr); }
-  .card__cover { width: 200px; aspect-ratio: 8 / 5; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); }
+  /* Screenshots read from the top-left (logo, nav, sidebar), so crop from there when an image is wider than 8:5. */
+  .card__cover { width: 200px; aspect-ratio: 8 / 5; object-fit: cover; object-position: left top; border-radius: 8px; border: 1px solid var(--line); }
   .card__body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
   .card__title { font-size: 18px; font-weight: 600; }
   .card__title a { text-decoration: none; }
