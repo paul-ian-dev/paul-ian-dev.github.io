@@ -18,7 +18,7 @@ const hasOther = other.length > 0;
       </div>
     )}
     <div id="panel-engineering" class="tabs__panel" data-panel>
-      {hasOther && <h3 class="tabs__heading">Engineering</h3>}
+      <h3 class:list={['tabs__heading', { 'visually-hidden': !hasOther }]}>Engineering</h3>
       <div class="timeline-wrap">
         <span class="timeline__fill" aria-hidden="true"></span>
         <ol class="timeline">{engineering.map((e) => <ExperienceItem entry={e} />)}</ol>
@@ -43,7 +43,10 @@ const hasOther = other.length > 0;
   }
   .tabs__list button[aria-selected='true'] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
   .tabs__heading { font-size: 15px; font-weight: 600; color: var(--fg); margin-bottom: 16px; }
-  :global(.tabs.is-enhanced) .tabs__heading { display: none; }
+  /* Hidden visually once the tabs name the panels, but kept for screen readers so role titles (h4) stay under an h3. */
+  :global(.tabs.is-enhanced) .tabs__heading {
+    position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
   .timeline-wrap { position: relative; view-timeline-name: --xp; }
   .timeline-wrap::before, .timeline__fill {
     position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; border-radius: 2px;

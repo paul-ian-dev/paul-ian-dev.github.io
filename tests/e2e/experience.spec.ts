@@ -42,3 +42,25 @@ test('role titles have no default heading margins', async ({ page }) => {
   await expect(page.locator('.xp__title').first()).toHaveCSS('margin-top', '0px');
   await expect(page.locator('.xp__title').first()).toHaveCSS('margin-bottom', '0px');
 });
+
+const headingLevels = (page: import('@playwright/test').Page) =>
+  page.evaluate(() =>
+    [...document.querySelectorAll('h1, h2, h3, h4, h5, h6')]
+      .filter((h) => h.checkVisibility())
+      .map((h) => Number(h.tagName[1])),
+  );
+
+test('heading levels never skip', async ({ page }) => {
+  await page.goto('/');
+  const levels = await headingLevels(page);
+  levels.forEach((level, i) => expect(level - (levels[i - 1] ?? 0), `heading ${i + 1}: h${levels[i - 1]} → h${level}`).toBeLessThanOrEqual(1));
+});
+
+test.describe('without JavaScript', () => {
+  test.use({ javaScriptEnabled: false });
+  test('heading levels never skip', async ({ page }) => {
+    await page.goto('/');
+    const levels = await headingLevels(page);
+    levels.forEach((level, i) => expect(level - (levels[i - 1] ?? 0), `heading ${i + 1}`).toBeLessThanOrEqual(1));
+  });
+});
