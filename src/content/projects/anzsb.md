@@ -1,5 +1,5 @@
 ---
-title: ANZSB website rebuild
+title: ANZSB Website Rebuild
 summary: A new website and membership management for a professional society, built to modernise its online presence.
 year: 2025
 context: PRECISE

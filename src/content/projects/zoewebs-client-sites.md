@@ -1,5 +1,5 @@
 ---
-title: Zoewebs client websites
+title: Zoewebs Client Websites
 summary: E-commerce and corporate sites for Zoewebs clients, from build through to client training.
 year: 2022
 context: Zoewebs
