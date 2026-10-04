@@ -15,7 +15,7 @@ export function byOrder(a: { data: { order: number } }, b: { data: { order: numb
   return a.data.order - b.data.order;
 }
 
-/** "Tetris (Java, Swing, 2024)": the first two stack items and the year, for the Earlier line. */
-export function earlierLine({ title, stack, year }: { title: string; stack: string[]; year: number }): string {
-  return `${title} (${[...stack.slice(0, 2), year].join(', ')})`;
+/** "(Java, Swing, 2024)": the first two stack items and the year, shown after an earlier project's name. */
+export function earlierMeta({ stack, year }: { stack: string[]; year: number }): string {
+  return `(${[...stack.slice(0, 2), year].join(', ')})`;
 }
