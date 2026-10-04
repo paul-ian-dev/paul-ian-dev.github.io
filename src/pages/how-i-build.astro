@@ -1,0 +1,103 @@
+---
+import Base from '../layouts/Base.astro';
+import type { GraphData } from '../scripts/pipeline-graph';
+
+// Flow only: no data types, tools, platforms, schedules or client details.
+const graph: GraphData = {
+  nodes: {
+    feeds: { label: 'Platform feeds', kind: 'end', text: 'Data shared or streamed in from the platforms the business already uses.' },
+    apis: { label: 'APIs', kind: 'end', text: 'Data pulled from other systems through their APIs.' },
+    files: { label: 'File loads', kind: 'end', text: 'Data that arrives as batch files.' },
+    ingest: { label: 'Ingestion', step: 1, text: 'Data from every source lands in one central warehouse.' },
+    transform: { label: 'Transformation', step: 2, hub: true, text: 'Raw data is cleaned, standardised and joined into analysis-ready datasets.' },
+    models: { label: 'Modelling', step: 3, text: 'Features are built from the clean data, and machine-learning models score it on a regular schedule.' },
+    semantic: { label: 'Semantic layer', step: 4, text: 'Results and business metrics are organised into reusable datasets that are easy to query.' },
+    apps: { label: 'Apps and reporting', step: 5, text: 'Internal apps and reports put the results in front of the people who use them.' },
+    activate: { label: 'Activation', step: 6, text: 'Selected results are sent back to the platforms that act on them.' },
+    appsOut: { label: 'Internal apps', kind: 'end', text: 'Tools where the business explores the results.' },
+    reports: { label: 'Reports', kind: 'end', text: 'Regular reporting built on the semantic layer.' },
+    platforms: { label: 'Downstream platforms', kind: 'end', text: 'The systems that use the results day to day.' },
+    orch: { label: 'Orchestration', kind: 'band', text: 'Scheduled jobs run each stage in the right order.' },
+    monitor: { label: 'Monitoring', kind: 'band', text: 'Logs are used to spot, trace and fix failures.' },
+  },
+  edges: [
+    ['feeds', 'ingest'], ['apis', 'ingest'], ['files', 'ingest'], ['ingest', 'transform'], ['transform', 'models'],
+    ['models', 'semantic'], ['semantic', 'apps'], ['semantic', 'activate'],
+    ['apps', 'appsOut'], ['apps', 'reports'], ['activate', 'platforms'],
+  ],
+  raw: ['feeds', 'apis', 'files', 'ingest'],
+};
+const steps = Object.values(graph.nodes).filter((n) => n.step);
+const ends = (ids: string[]) => ids.map((id) => graph.nodes[id].label).join(', ');
+---
+<Base title="How I build data pipelines · Paul Ian Lim" description="The general shape of the data pipelines Paul Ian Lim builds, from sources through modelling to the apps and platforms that use the results.">
+  <main id="main" class="page">
+    <a class="back" href="/#about">← Back to Paul Ian Lim</a>
+    <h1>How I build data pipelines</h1>
+    <p class="intro">
+      The general shape of the data pipelines I build: data comes in from several sources, is cleaned and modelled in one
+      place, and goes back out to the apps and platforms that use it.
+    </p>
+    <p class="hint">
+      <span class="hint--wide">Hover a step, or tab to it, to see what happens there.</span>
+      <span class="hint--narrow">Tap a step to see what happens there.</span>
+    </p>
+
+    <div class="graph" data-graph={JSON.stringify(graph)}>
+      <!-- Shown until the script draws the graph, and to anyone without JavaScript. -->
+      <div class="graph__fallback">
+        <p><strong>Sources:</strong> {ends(['feeds', 'apis', 'files'])}</p>
+        <ol>{steps.map((n) => <li><strong>{n.label}.</strong> {n.text}</li>)}</ol>
+        <p><strong>Outputs:</strong> {ends(['appsOut', 'reports', 'platforms'])}</p>
+        <p><strong>Across every stage:</strong> {graph.nodes.orch.text} {graph.nodes.monitor.text}</p>
+      </div>
+    </div>
+    <p class="note">Orchestration and monitoring apply to every stage, so they run along the bottom.</p>
+  </main>
+</Base>
+
+<script>
+  import { initPipelineGraph } from '../scripts/pipeline-graph';
+  const root = document.querySelector<HTMLElement>('.graph');
+  if (root?.dataset.graph) initPipelineGraph(root, JSON.parse(root.dataset.graph));
+</script>
+
+<style>
+  .page { max-width: 1180px; margin: 0 auto; padding: 72px 16px 96px; display: flex; flex-direction: column; gap: 20px; }
+  .back { width: fit-content; font-size: 13px; color: var(--faint); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  h1 { font-size: clamp(32px, 5vw, 44px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+  .intro { max-width: 64ch; color: var(--muted); }
+  .hint, .note { font-size: 14px; color: var(--faint); }
+  .hint--narrow { display: none; }
+  @media (max-width: 760px) { .hint--wide { display: none; } .hint--narrow { display: inline; } }
+
+  .graph { position: relative; margin-top: 8px; }
+  .graph.is-drawn .graph__fallback { display: none; }
+  .graph__fallback { max-width: 64ch; display: flex; flex-direction: column; gap: 10px; color: var(--muted); }
+  .graph__fallback ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+
+  /* The SVG is built by pipeline-graph.ts, so its rules reach in with :global. */
+  .graph :global(svg) { display: block; width: 100%; height: auto; overflow: visible; }
+  .graph :global(.graph__edge) { fill: none; stroke: var(--line); stroke-width: 1.5; }
+  .graph :global(.graph__edge.is-lit) { stroke: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+  .graph :global(.graph__band) { fill: var(--faint); font: 600 11px 'Chivo', system-ui, sans-serif; letter-spacing: 0.12em; }
+  .graph :global(.graph__node) { cursor: pointer; outline: none; }
+  .graph :global(.graph__node rect) { fill: var(--bg); stroke: var(--line); stroke-width: 1.2; transition: stroke 0.2s, fill 0.2s; }
+  .graph :global(.graph__node text) { fill: var(--fg); font: 600 13px 'Chivo', system-ui, sans-serif; pointer-events: none; }
+  .graph :global(.graph__node .sub) { fill: var(--faint); font-weight: 400; font-size: 11px; }
+  .graph :global(.graph__node.is-hub rect) { stroke: var(--accent); }
+  .graph :global(.graph__node.is-hub text:not(.sub)) { fill: var(--accent); }
+  .graph :global(.graph__node.kind-end rect) { stroke-dasharray: 3 3; }
+  .graph :global(.graph__node:hover rect),
+  .graph :global(.graph__node:focus-visible rect),
+  .graph :global(.graph__node.is-active rect) { stroke: var(--accent); fill: var(--panel); stroke-width: 2; }
+  .graph :global(.graph__node:focus-visible rect) { stroke-width: 2.5; }
+  .graph :global(.graph__tip) {
+    position: absolute; z-index: 5; width: min(300px, calc(100% - 16px)); padding: 14px 16px; border-radius: 10px;
+    background: var(--panel); border: 1px solid var(--line); box-shadow: 0 10px 30px rgb(0 0 0 / 0.25);
+    display: flex; flex-direction: column; gap: 8px; pointer-events: none;
+  }
+  .graph :global(.graph__tip h2) { font-size: 16px; font-weight: 600; }
+  .graph :global(.graph__tip p) { font-size: 14px; color: var(--muted); }
+  @media (prefers-reduced-motion: reduce) { .graph :global(.graph__node rect) { transition: none; } }
+</style>

@@ -11,6 +11,7 @@ const { profile } = Astro.props;
     <p class="label">What I build</p>
     <FlowStrip steps={profile.whatIBuild} />
   </div>
+  <a class="about__more" href="/how-i-build/">See how it fits together →</a>
   {profile.about.map((para) => (
     <p class="about__para">
       {parseLinks(para).map((s) => (typeof s === 'string' ? s : <a href={s.href} rel="noopener">{s.text}</a>))}
@@ -21,6 +22,8 @@ const { profile } = Astro.props;
 <style>
   .about { display: flex; flex-direction: column; gap: 22px; max-width: 64ch; }
   .about__build { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  .about__more { width: fit-content; margin-top: -14px; font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: none; }
+  .about__more:hover { text-decoration: underline; }
   .about__para { font-size: 17px; line-height: 1.7; color: var(--muted); }
   /* On phones the strip only repeats the pitch and pushes the About text below the fold. */
   @media (max-width: 640px) { .about__build { display: none; } }
