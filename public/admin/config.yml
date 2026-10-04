@@ -112,7 +112,7 @@ collections:
     summary: "{{name}} ({{year}})"
     sortable_fields: [order, year]
     fields:
-      - { name: name, label: Name, widget: string }
+      - { name: name, label: Name, widget: text, hint: "Press Enter to start a new line on the site." }
       - { name: issuer, label: Issuer, widget: string }
       - { name: year, label: Year, widget: number, value_type: int }
       - { name: detail, label: Detail, widget: string, required: false }
