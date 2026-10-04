@@ -13,7 +13,7 @@ const { profile, nav } = Astro.props;
       ))}
     </p>
     <h1 class="identity__name">{profile.name}</h1>
-    <p class="identity__headline">{profile.headline}</p>
+    <p class="identity__headline" data-decode>{profile.headline}</p>
     <p class="identity__pitch">{profile.pitch}</p>
     <p class="label">{profile.location}</p>
   </div>
