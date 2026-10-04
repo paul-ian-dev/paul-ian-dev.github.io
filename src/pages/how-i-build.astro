@@ -67,6 +67,12 @@ const ends = (ids: string[]) => ids.map((id) => graph.nodes[id].label).join(', '
 
   .graph { position: relative; margin-top: 8px; }
   .graph.is-drawn .graph__fallback { display: none; }
+  /* With JS, hold the graph's space and hide the text list until the script draws, so it never flashes.
+     If the script fails, the list still appears after 2s. */
+  :global(.js) .graph:not(.is-drawn) { aspect-ratio: 1180 / 370; }
+  :global(.js) .graph:not(.is-drawn) .graph__fallback { visibility: hidden; max-height: 0; overflow: hidden; animation: graph-reveal 0s 2s forwards; }
+  @keyframes graph-reveal { to { visibility: visible; max-height: none; overflow: visible; } }
+  @media (max-width: 791px) { :global(.js) .graph:not(.is-drawn) { aspect-ratio: 360 / 830; } }
   .graph__fallback { max-width: 64ch; display: flex; flex-direction: column; gap: 10px; color: var(--muted); }
   .graph__fallback ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
 

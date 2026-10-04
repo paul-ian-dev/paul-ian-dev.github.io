@@ -43,6 +43,8 @@ const ogImage = new URL('/og.png', Astro.site);
         try { t = localStorage.getItem('theme'); } catch {}
         if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
         document.documentElement.dataset.theme = t;
+        // Lets pages hide no-JS fallbacks until their script has run.
+        document.documentElement.classList.add('js');
       })();
     </script>
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
