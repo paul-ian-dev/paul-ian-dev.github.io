@@ -5,7 +5,7 @@ category: engineering
 start: "2025-02"
 end: "2025-06"
 summary: |-
-  Rebuilt the website for the Australian and New Zealand Society of Biomechanics
+  Designed and rebuilt the website for the Australian and New Zealand Society of Biomechanics
   Included membership management with CiviCRM
 tags: [WordPress, Elementor, CiviCRM]
 order: 2
