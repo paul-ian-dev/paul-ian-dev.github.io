@@ -3,6 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [master]
+  # Rebuild on 1 January so the footer's copyright year rolls over without a content change.
+  schedule:
+    - cron: '0 0 1 1 *'
   workflow_dispatch:
 
 permissions:
