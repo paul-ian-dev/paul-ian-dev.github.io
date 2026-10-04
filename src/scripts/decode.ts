@@ -14,7 +14,7 @@ function scramble(ch: string): string {
  * Text marked [data-decode] scrambles and resolves left to right on load.
  * Each word is held at its real width while scrambled, so the line never re-wraps and nothing shifts.
  */
-export async function initDecode(durationMs = 1400): Promise<void> {
+export async function initDecode(durationMs = 1000): Promise<void> {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const targets = [...document.querySelectorAll<HTMLElement>('[data-decode]')];
   if (!targets.length) return;
