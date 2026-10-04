@@ -7,6 +7,7 @@ end: null
 summary: |-
   Build and run Snowflake data pipelines in SQL and Python
   Build and automate machine-learning workflows
+  Build AI assistants that let teams ask questions of their data in plain English, including the instructions and guardrails that shape their answers
   Build integrations and data flows between the warehouse and marketing platforms such as Braze and Oracle Eloqua
   Debug production issues across cloud logs
 tags: [Snowflake, Python, Snowpark, SQL, Streamlit, PHP, Braze, Eloqua, Azure · KQL]
