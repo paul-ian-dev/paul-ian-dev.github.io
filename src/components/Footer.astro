@@ -4,8 +4,14 @@ const { name } = Astro.props;
 const year = new Date().getFullYear();
 ---
 <footer class="footer">
-  <p>© {year} {name}</p>
+  <p>© <span data-year={year}>{year}</span> {name}</p>
 </footer>
+<script is:inline>
+  // The build year can lag if no rebuild happens in a new year. Use the visitor's year, never one earlier than the build.
+  document.querySelectorAll('[data-year]').forEach((el) => {
+    el.textContent = String(Math.max(Number(el.dataset.year), new Date().getFullYear()));
+  });
+</script>
 
 <style>
   .footer { padding-top: 24px; border-top: 1px solid var(--line); font-size: 14px; color: var(--faint); }
