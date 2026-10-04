@@ -38,4 +38,19 @@ const points = (summary ?? '').split('\n').map((l) => l.replace(/^\s*[-•]\s*/,
   .xp--compact .xp__company::before { content: ', '; }
   .xp--compact .xp__company .visually-hidden { display: none; }
   .xp--compact .xp__node { display: none; }
+  /* Each role's dot lights up as the timeline fill reaches it. */
+  @keyframes node-lit { to { background: var(--accent); border-color: var(--accent); } }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .xp:not(.xp--compact) .xp__node { animation: node-lit linear both; }
+      /* Separate rule so the minifier can't fold animation-timeline into the shorthand. */
+      li.xp:not(.xp--compact) .xp__node { animation-timeline: view(); animation-range: cover 38% cover 42%; }
+    }
+  }
+  @supports not (animation-timeline: view()) {
+    .xp:not(.xp--compact) .xp__node { background: var(--accent); border-color: var(--accent); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .xp:not(.xp--compact) .xp__node { background: var(--accent); border-color: var(--accent); }
+  }
 </style>
