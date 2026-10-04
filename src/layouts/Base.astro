@@ -48,8 +48,13 @@ const ogImage = new URL('/og.png', Astro.site);
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
   <body>
+    <div class="backdrop" aria-hidden="true"></div>
     <a class="skip" href="#main">Skip to content</a>
     <ThemeToggle />
     <slot />
+    <script>
+      import { initGlow } from '../scripts/glow';
+      initGlow();
+    </script>
   </body>
 </html>

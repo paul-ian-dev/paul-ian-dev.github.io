@@ -27,6 +27,16 @@ p { margin: 0; }
 }
 .btn--primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .btn--primary:hover { color: var(--on-accent); filter: brightness(1.06); }
+/* Dot grid behind every page, fixed to the window; a brighter copy is revealed around the pointer (glow.ts). */
+.backdrop { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+.backdrop::before, .backdrop::after { content: ''; position: absolute; inset: 0; background-size: 22px 22px; }
+.backdrop::before { background-image: radial-gradient(color-mix(in srgb, var(--line) 70%, transparent) 1px, transparent 1.4px); }
+.backdrop::after {
+  background-image: radial-gradient(color-mix(in srgb, var(--accent) 42%, var(--bg)) 1.2px, transparent 1.6px);
+  -webkit-mask-image: radial-gradient(130px circle at var(--mx, -999px) var(--my, -999px), #000 0%, rgb(0 0 0 / 0.35) 40%, transparent 75%);
+          mask-image: radial-gradient(130px circle at var(--mx, -999px) var(--my, -999px), #000 0%, rgb(0 0 0 / 0.35) 40%, transparent 75%);
+  opacity: var(--glow, 0); transition: opacity 0.4s ease;
+}
 .skip {
   position: absolute; left: 16px; top: -100px; z-index: 100; padding: 10px 14px;
   background: var(--accent); color: var(--on-accent); border-radius: 6px; font-weight: 600;
