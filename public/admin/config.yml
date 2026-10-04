@@ -103,7 +103,7 @@ collections:
       - { name: body, label: "Case study (leave empty for no case-study page)", widget: markdown, required: false }
 
   - name: credentials
-    label: Credentials
+    label: Education, certifications and awards
     folder: src/content/credentials
     extension: yaml
     format: yaml
@@ -118,6 +118,7 @@ collections:
       - { name: detail, label: Detail, widget: string, required: false }
       - name: kind
         label: Type
+        hint: Degrees and certifications appear under Education and certifications; awards get their own section.
         widget: select
         options:
           - { label: Degree, value: degree }

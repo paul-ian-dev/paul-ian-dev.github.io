@@ -19,6 +19,9 @@ const profile = profileEntry.data;
 const experience = (await getCollection('experience')).sort(byOrder);
 const projects = (await getCollection('projects')).sort(byYearDesc);
 const credentials = (await getCollection('credentials')).sort(byOrder);
+// Degrees and certifications in one section, competition results in another (the CMS kind field decides).
+const education = credentials.filter((c) => c.data.kind !== 'award');
+const awards = credentials.filter((c) => c.data.kind === 'award');
 const notes = (await getCollection('notes', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
@@ -31,7 +34,8 @@ const nav = buildNav({
   experience: engineering.length,
   work: featured.length,
   notes: notes.length,
-  credentials: credentials.length,
+  education: education.length,
+  awards: awards.length,
 });
 
 const title = `${profile.name} · ${profile.headline}`;
@@ -54,7 +58,8 @@ const jsonLd = {
       <Work featured={featured} earlier={earlier} />
       <StackTiers stack={profile.stack} />
       <NotesList notes={notes} limit={3} />
-      <Credentials credentials={credentials} />
+      <Credentials id="education" heading="Education and certifications" credentials={education} />
+      <Credentials id="awards" heading="Awards" credentials={awards} />
       <Footer name={profile.name} />
     </main>
   </div>
