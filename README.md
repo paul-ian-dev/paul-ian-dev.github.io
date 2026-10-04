@@ -1,29 +1,25 @@
 # paul-ian-dev.github.io
 
-Personal site of Paul Ian Lim, built with Astro and edited through Sveltia CMS.
+Source for [paul-ian-dev.github.io](https://paul-ian-dev.github.io), the personal site of Paul Ian Lim, a software and data engineer on the Gold Coast, Australia.
 
-## Editing content (no code needed)
+## Built with
 
-1. Go to https://paul-ian-dev.github.io/admin/
-2. Choose **Sign In Using Access Token**. Create a fine-grained GitHub token for this repository only, with **Contents: Read and write**. Keep the token private; the CMS stores it in your browser.
-3. Edit Profile, Experience, Projects, Credentials or Notes, then **Save**.
-4. Each save is a commit to `master`. GitHub Actions rebuilds and publishes the site in about a minute (see the Actions tab).
+- [Astro](https://astro.build) for a fully static site, with a little TypeScript for the theme toggle, scroll-aware navigation and canvas animation
+- [Sveltia CMS](https://github.com/sveltia/sveltia-cms) for editing content in the browser; content lives in `src/content/` as YAML and Markdown
+- GitHub Actions and GitHub Pages for deployment on every push to `master`
 
-Tips:
-- Experience **Category** decides the tab: Engineering or Other work.
-- A project with an empty case study shows as a card only. Add text to get a `/work/<name>/` page.
-- New notes start as **Draft**. Untick Draft to publish.
-- Upload your CV in Profile → CV. The Download CV button appears once it's set.
-- Screenshots: export at about 1600px wide as WebP or compressed PNG before uploading.
-- Anything in `[square brackets]` is a placeholder. The build log lists any that remain.
+## Run it locally
 
-## Deployment
-
-Every push to `master` runs `.github/workflows/deploy.yml`, which builds the site and publishes it to GitHub Pages (Settings → Pages → Source: **GitHub Actions**). A failed build leaves the previous version live; the error is in the Actions tab.
-
-## Local development
+Requires Node.js 22.12 or later.
 
     npm install
-    npm run dev          # http://localhost:4321, live reload
-    npm run build        # production build into dist/
-    npm run preview      # serve dist/ at http://localhost:4321
+    npm run dev       # http://localhost:4321
+    npm run build     # type-check and build into dist/
+    npm run preview   # serve the built site
+
+## Layout
+
+    src/content/      profile, experience, projects, credentials and notes
+    src/components/   page sections
+    src/pages/        home, project case studies, notes and 404
+    public/admin/     CMS configuration

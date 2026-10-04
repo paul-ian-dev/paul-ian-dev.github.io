@@ -35,7 +35,7 @@ collections:
           - { name: email, label: Email, widget: string }
           - { name: linkedin, label: LinkedIn URL, widget: string }
           - { name: github, label: GitHub URL, widget: string }
-          - { name: cv, label: CV (PDF), widget: file, required: false, media_folder: /public, public_folder: / }
+          - { name: cv, label: CV (PDF), widget: file, required: false, media_folder: /public, public_folder: /, hint: "The Download CV button appears once this is set." }
           - name: whatIBuild
             label: What I build (flow steps)
             widget: list
@@ -67,6 +67,7 @@ collections:
       - { name: title, label: Job title, widget: string }
       - name: category
         label: Category
+        hint: Decides the tab the role appears under.
         widget: select
         options:
           - { label: Engineering, value: engineering }
@@ -92,7 +93,7 @@ collections:
       - { name: year, label: Year, widget: number, value_type: int }
       - { name: context, label: "Context (e.g. PRECISE, Personal project)", widget: string, required: false }
       - { name: stack, label: Stack, widget: list, required: false }
-      - { name: cover, label: Screenshot, widget: image, required: false }
+      - { name: cover, label: Screenshot, widget: image, required: false, hint: "Export at about 1600px wide as JPEG or WebP before uploading." }
       - { name: coverAlt, label: Screenshot description, widget: string, required: false }
       - { name: liveUrl, label: Live site URL, widget: string, required: false }
       - { name: repoUrl, label: Code repository URL, widget: string, required: false }
