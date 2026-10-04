@@ -6,7 +6,7 @@ start: "2026-01"
 end: null
 summary: |-
   Build and run Snowflake data pipelines in SQL and Python
-  Automate machine-learning workflows for customer segmentation and prediction, retrained on a schedule
+  Build and automate machine-learning workflows
   Build integrations and data flows between the warehouse and marketing platforms such as Braze and Oracle Eloqua
   Debug production issues across cloud logs
 tags: [Snowflake, Python, Snowpark, SQL, Streamlit, PHP, Braze, Eloqua, Azure · KQL]
