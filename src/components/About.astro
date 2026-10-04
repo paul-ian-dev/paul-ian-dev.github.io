@@ -23,7 +23,8 @@ const { profile } = Astro.props;
 
 <style>
   .about { display: flex; flex-direction: column; gap: 22px; max-width: 64ch; }
-  .about__build { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+  /* As wide as the strip, so the link's arrow ends where the last step box ends. */
+  .about__build { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; width: fit-content; max-width: 100%; }
   /* Section label on the left, its "more" link on the right, sharing one baseline. */
   .about__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
   .about__more { font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; }

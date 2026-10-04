@@ -19,7 +19,7 @@ const hubIndex = Math.max(0, steps.findIndex((s) => s.hub));
 </div>
 
 <style>
-  .flow { position: relative; padding-block: 8px; container-type: inline-size; }
+  .flow { position: relative; padding-block: 8px; }
   .flow__list { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 12px 10px; margin: 0; padding: 0; list-style: none; }
   .flow__step { display: flex; align-items: flex-start; gap: 10px; }
   /* Arrows are drawn, not typed, so they look the same in every font. The ──▶ text is the no-CSS fallback. */
@@ -38,8 +38,9 @@ const hubIndex = Math.max(0, steps.findIndex((s) => s.hub));
   .flow__caption { font-size: 12px; color: var(--faint); padding-left: 2px; }
   /* Particles already show the direction, so the arrows step back to a faint guide while they run. */
   .flow:has(:global(.flow-canvas)) .flow__arrow { opacity: 0.35; }
-  /* Narrower desktop columns (around 1025-1200px windows): tighten the row so it still fits on one line. */
-  @container (max-width: 560px) {
+  /* Narrower desktop windows, where the content column is under about 560px: tighten the row so it still fits on one
+     line. A media query rather than a container query, so the strip keeps its natural width for the heading above it. */
+  @media (min-width: 1025px) and (max-width: 1218px) {
     .flow__list { gap: 12px 6px; }
     .flow__step { gap: 6px; }
     .flow__arrow { width: 20px; }
