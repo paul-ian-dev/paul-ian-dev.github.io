@@ -2,7 +2,7 @@
 title: Imaginex
 summary: A Pinterest-style image-sharing app. Upload, categorise and browse images, with content managed in Sanity.
 year: 2023
-context: Personal project
+context: Personal Project
 stack: [React, Tailwind CSS, Sanity, Netlify]
 liveUrl: https://paul-imaginex.netlify.app
 repoUrl: https://github.com/paul-ian-dev/imaginex
