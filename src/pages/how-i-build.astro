@@ -5,20 +5,20 @@ import type { GraphData } from '../scripts/pipeline-graph';
 // Flow only: no data types, tools, platforms, schedules or client details.
 const graph: GraphData = {
   nodes: {
-    feeds: { label: 'Platform feeds', kind: 'end', text: 'Data shared or streamed in from the platforms the business already uses.' },
-    apis: { label: 'APIs', kind: 'end', text: 'Data pulled from other systems through their APIs.' },
-    files: { label: 'File loads', kind: 'end', text: 'Data that arrives as batch files.' },
-    ingest: { label: 'Ingestion', step: 1, text: 'Data from every source lands in one central warehouse.' },
-    transform: { label: 'Transformation', step: 2, hub: true, text: 'Raw data is cleaned, standardised and joined into analysis-ready datasets.' },
-    models: { label: 'Modelling', step: 3, text: 'Features are built from the clean data, and machine-learning models score it on a regular schedule.' },
-    semantic: { label: 'Semantic layer', step: 4, text: 'Results and business metrics are organised into reusable datasets that are easy to query.' },
-    apps: { label: 'Apps and reporting', step: 5, text: 'Internal apps and reports put the results in front of the people who use them.' },
-    activate: { label: 'Activation', step: 6, text: 'Selected results are sent back to the platforms that act on them.' },
-    appsOut: { label: 'Internal apps', kind: 'end', text: 'Tools where the business explores the results.' },
-    reports: { label: 'Reports', kind: 'end', text: 'Regular reporting built on the semantic layer.' },
-    platforms: { label: 'Downstream platforms', kind: 'end', text: 'The systems that use the results day to day.' },
-    orch: { label: 'Orchestration', kind: 'band', text: 'Scheduled jobs run each stage in the right order.' },
-    monitor: { label: 'Monitoring', kind: 'band', text: 'Logs are used to spot, trace and fix failures.' },
+    feeds: { label: 'Platform feeds', kind: 'end', text: 'Data that platforms share with us or stream in as it happens.' },
+    apis: { label: 'APIs', kind: 'end', text: 'Data I pull from other systems through their APIs.' },
+    files: { label: 'File loads', kind: 'end', text: 'Data that turns up as files, in batches.' },
+    ingest: { label: 'Ingestion', step: 1, text: 'Everything lands in one warehouse, so there is a single place to work from.' },
+    transform: { label: 'Transformation', step: 2, hub: true, text: 'I clean the raw data, make it consistent and join it together so it is ready to analyse.' },
+    models: { label: 'Modelling', step: 3, text: 'I build features from the clean data and run machine-learning models over it on a schedule.' },
+    semantic: { label: 'Semantic layer', step: 4, text: 'The results and key numbers are organised into tidy datasets that are easy to query.' },
+    apps: { label: 'Apps and reporting', step: 5, text: 'Internal apps and reports put those results in front of the people who need them.' },
+    activate: { label: 'Activation', step: 6, text: 'The useful results go back out to the platforms that act on them.' },
+    appsOut: { label: 'Internal apps', kind: 'end', text: 'Where people explore the results day to day.' },
+    reports: { label: 'Reports', kind: 'end', text: 'Regular reporting built on top of the semantic layer.' },
+    platforms: { label: 'Downstream platforms', kind: 'end', text: 'The systems that put the results to work.' },
+    orch: { label: 'Orchestration', kind: 'band', text: 'Scheduled jobs run each step in the right order.' },
+    monitor: { label: 'Monitoring', kind: 'band', text: 'When something breaks, the logs help me find and fix it.' },
   },
   edges: [
     ['feeds', 'ingest'], ['apis', 'ingest'], ['files', 'ingest'], ['ingest', 'transform'], ['transform', 'models'],
@@ -35,12 +35,8 @@ const ends = (ids: string[]) => ids.map((id) => graph.nodes[id].label).join(', '
     <a class="back" href="/#about">← Back to Paul Ian Lim</a>
     <h1>How I build data pipelines</h1>
     <p class="intro">
-      The general shape of the data pipelines I build: data comes in from several sources, is cleaned and modelled in one
-      place, and goes back out to the apps and platforms that use it.
-    </p>
-    <p class="hint">
-      <span class="hint--wide">Hover a step, or tab to it, to see what happens there.</span>
-      <span class="hint--narrow">Tap a step to see what happens there.</span>
+      Most of the pipelines I build follow the same shape. Data comes in from a few places, gets cleaned up and modelled in
+      one spot, then goes back out to the people and tools that use it.
     </p>
 
     <div class="graph" data-graph={JSON.stringify(graph)}>
@@ -49,10 +45,10 @@ const ends = (ids: string[]) => ids.map((id) => graph.nodes[id].label).join(', '
         <p><strong>Sources:</strong> {ends(['feeds', 'apis', 'files'])}</p>
         <ol>{steps.map((n) => <li><strong>{n.label}.</strong> {n.text}</li>)}</ol>
         <p><strong>Outputs:</strong> {ends(['appsOut', 'reports', 'platforms'])}</p>
-        <p><strong>Across every stage:</strong> {graph.nodes.orch.text} {graph.nodes.monitor.text}</p>
+        <p><strong>Across every step:</strong> {graph.nodes.orch.text} {graph.nodes.monitor.text}</p>
       </div>
     </div>
-    <p class="note">Orchestration and monitoring apply to every stage, so they run along the bottom.</p>
+    <p class="note">Orchestration and monitoring cover every step, so they sit underneath the rest.</p>
   </main>
 </Base>
 
@@ -67,9 +63,7 @@ const ends = (ids: string[]) => ids.map((id) => graph.nodes[id].label).join(', '
   .back { width: fit-content; font-size: 13px; color: var(--faint); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   h1 { font-size: clamp(32px, 5vw, 44px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
   .intro { max-width: 64ch; color: var(--muted); }
-  .hint, .note { font-size: 14px; color: var(--faint); }
-  .hint--narrow { display: none; }
-  @media (max-width: 760px) { .hint--wide { display: none; } .hint--narrow { display: inline; } }
+  .note { font-size: 14px; color: var(--faint); }
 
   .graph { position: relative; margin-top: 8px; }
   .graph.is-drawn .graph__fallback { display: none; }

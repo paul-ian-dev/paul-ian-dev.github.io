@@ -69,7 +69,7 @@ export function initPipelineGraph(root: HTMLElement, data: GraphData): void {
     svg.replaceChildren();
     const edgeLayer = el('g', {}, svg), partLayer = el('g', {}, svg), nodeLayer = el('g', {}, svg);
     el('line', { x1: 20, x2: W - 20, y1: bandY - 42, y2: bandY - 42, class: 'graph__edge', 'stroke-dasharray': '2 5' }, edgeLayer);
-    el('text', { x: 20, y: bandY - 50, class: 'graph__band' }, edgeLayer).textContent = 'ACROSS EVERY STAGE';
+    el('text', { x: 20, y: bandY - 50, class: 'graph__band' }, edgeLayer).textContent = 'ACROSS EVERY STEP';
 
     edges = data.edges.filter(([a, b]) => pos[a] && pos[b]).map(([a, b]) => {
       const p = pos[a], q = pos[b];
