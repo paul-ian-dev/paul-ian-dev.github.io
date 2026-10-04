@@ -11,7 +11,7 @@ backend:
 
 media_folder: public/uploads
 public_folder: /uploads
-site_url: https://paul-ian-dev.github.io
+site_url: https://paul-ian.com
 
 collections:
   - name: profile

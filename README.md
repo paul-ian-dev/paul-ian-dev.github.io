@@ -1,6 +1,6 @@
 # paul-ian-dev.github.io
 
-Source for [paul-ian-dev.github.io](https://paul-ian-dev.github.io), the personal site of Paul Ian Lim, a software and data engineer on the Gold Coast, Australia.
+Source for [paul-ian.com](https://paul-ian.com), the personal site of Paul Ian Lim, a software and data engineer on the Gold Coast, Australia.
 
 ## Built with
 
