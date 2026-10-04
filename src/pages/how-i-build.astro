@@ -91,6 +91,8 @@ const ends = (ids: string[]) => ids.map((id) => graph.nodes[id].label).join(', '
     background: var(--panel); border: 1px solid var(--line); box-shadow: 0 10px 30px rgb(0 0 0 / 0.25);
     display: flex; flex-direction: column; gap: 8px; pointer-events: none;
   }
+  /* display: flex above would otherwise override the hidden attribute and leave the tooltip on screen. */
+  .graph :global(.graph__tip[hidden]) { display: none; }
   .graph :global(.graph__tip h2) { font-size: 16px; font-weight: 600; }
   .graph :global(.graph__tip p) { font-size: 14px; color: var(--muted); }
   @media (prefers-reduced-motion: reduce) { .graph :global(.graph__node rect) { transition: none; } }

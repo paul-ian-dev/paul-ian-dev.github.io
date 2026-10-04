@@ -97,11 +97,17 @@ export function initPipelineGraph(root: HTMLElement, data: GraphData): void {
       el('rect', { width: nodeW, height: nodeH, rx: 7 }, g);
       el('text', { x: nodeW / 2, y: n.step ? 20 : 28, 'text-anchor': 'middle' }, g).textContent = n.label;
       if (n.step) el('text', { x: nodeW / 2, y: 36, 'text-anchor': 'middle', class: 'sub' }, g).textContent = `Step ${n.step}`;
+      // Mouse: show only while hovering. Keyboard: show while focused. Touch: tap to toggle.
+      let pointer = '';
+      g.addEventListener('pointerdown', (e) => { pointer = e.pointerType; });
       g.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') show(id); });
-      g.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') hide(); });
-      g.addEventListener('focus', () => show(id));
-      g.addEventListener('blur', hide);
-      g.addEventListener('click', () => (active === id ? hide() : show(id)));
+      g.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') { hide(); g.blur(); } });
+      g.addEventListener('focus', () => { if (g.matches(':focus-visible')) show(id); });
+      g.addEventListener('blur', () => { if (active === id) hide(); });
+      g.addEventListener('click', () => {
+        if (pointer !== 'mouse') active === id ? hide() : show(id);
+        pointer = '';
+      });
       g.addEventListener('keydown', (e) => { if (e.key === 'Escape') { hide(); g.blur(); } });
     }
 
